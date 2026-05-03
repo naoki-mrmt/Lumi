@@ -1,0 +1,157 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Lumi Progress Schema",
+  "description": "9人制バレースカウティングアプリの進捗管理ファイルのスキーマ",
+  "type": "object",
+  "required": ["project", "current_milestone", "milestones", "decisions_log", "open_questions", "session_log", "metrics", "last_updated"],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "project": {
+      "type": "object",
+      "required": ["name", "version", "started_at", "current_phase"],
+      "properties": {
+        "name": { "type": "string" },
+        "display_name": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "bundle_identifier": { "type": "string", "pattern": "^[a-zA-Z][a-zA-Z0-9-]*(\\.[a-zA-Z][a-zA-Z0-9-]*)+$" },
+        "naming_origin": { "type": "string" },
+        "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "started_at": { "type": "string", "format": "date" },
+        "current_phase": {
+          "type": "string",
+          "enum": ["1.0", "1.1", "1.5", "2.0", "2.1", "2.2", "2.3", "2.4"]
+        }
+      }
+    },
+    "current_milestone": {
+      "type": "object",
+      "required": ["id", "name", "status"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^M\\d+$" },
+        "name": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "in_progress", "blocked", "completed"]
+        },
+        "started_at": { "type": ["string", "null"], "format": "date-time" },
+        "estimated_completion": { "type": ["string", "null"], "format": "date" },
+        "completion_percentage": { "type": "integer", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "milestones": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "status", "tasks"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^M\\d+$" },
+          "name": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "in_progress", "blocked", "completed"]
+          },
+          "started_at": { "type": ["string", "null"], "format": "date-time" },
+          "completed_at": { "type": ["string", "null"], "format": "date-time" },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "name", "status"],
+              "properties": {
+                "id": { "type": "string", "pattern": "^M\\d+-T\\d+$" },
+                "name": { "type": "string" },
+                "status": {
+                  "type": "string",
+                  "enum": ["pending", "in_progress", "blocked", "completed"]
+                },
+                "started_at": { "type": ["string", "null"], "format": "date-time" },
+                "completed_at": { "type": ["string", "null"], "format": "date-time" },
+                "blocker": { "type": ["string", "null"] },
+                "notes": { "type": ["string", "null"] }
+              }
+            }
+          }
+        }
+      }
+    },
+    "decisions_log": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["date", "decision"],
+        "properties": {
+          "date": { "type": "string", "format": "date" },
+          "decision": { "type": "string" },
+          "reference": { "type": "string" }
+        }
+      }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "question", "status"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^Q-\\d+$" },
+          "question": { "type": "string" },
+          "raised_at": { "type": "string", "format": "date" },
+          "status": {
+            "type": "string",
+            "enum": ["open", "resolved", "deferred"]
+          },
+          "context": { "type": "string" },
+          "due_milestone": { "type": "string" },
+          "resolution": { "type": "string" },
+          "resolved_at": { "type": "string", "format": "date" }
+        }
+      }
+    },
+    "session_log": {
+      "type": "array",
+      "description": "セッションログ。先頭が最新。",
+      "items": {
+        "type": "object",
+        "required": ["date", "summary"],
+        "properties": {
+          "date": { "type": "string", "format": "date" },
+          "summary": { "type": "string" },
+          "completed_tasks": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "next_action": { "type": "string" },
+          "blockers": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "total_tasks": { "type": "integer", "minimum": 0 },
+        "completed_tasks": { "type": "integer", "minimum": 0 },
+        "in_progress_tasks": { "type": "integer", "minimum": 0 },
+        "pending_tasks": { "type": "integer", "minimum": 0 },
+        "test_coverage": {
+          "type": "object",
+          "properties": {
+            "logic_layer": { "type": ["number", "null"] },
+            "tca_reducer": { "type": ["number", "null"] },
+            "ui_layer": { "type": ["string", "null"] }
+          }
+        }
+      }
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "last_updated_by": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,230 @@
+{
+  "$schema": "./progress.schema.json",
+  "project": {
+    "name": "lumi",
+    "display_name": "Lumi",
+    "subtitle": "Lumi — Volleyball Scouting",
+    "bundle_identifier": "com.muramoto-co.lumi",
+    "naming_origin": "フランス語 lumière（光）に由来。データに光を当て、試合の本質を映し出す意図。",
+    "version": "0.1.0",
+    "started_at": "2026-05-02",
+    "current_phase": "1.0"
+  },
+  "current_milestone": {
+    "id": "M0",
+    "name": "プロジェクト基盤",
+    "status": "in_progress",
+    "started_at": "2026-05-03",
+    "estimated_completion": null,
+    "completion_percentage": 12
+  },
+  "milestones": [
+    {
+      "id": "M0",
+      "name": "プロジェクト基盤",
+      "status": "in_progress",
+      "started_at": "2026-05-03",
+      "completed_at": null,
+      "tasks": [
+        { "id": "M0-T1", "name": "Xcodeプロジェクト初期化", "status": "completed", "completed_at": "2026-05-03T00:00:00+09:00", "notes": "ユーザーが手動でXcode新規プロジェクト作成。Bundle ID: com.muramoto-co.lumi、iPad横画面のみ対応" },
+        { "id": "M0-T2", "name": "SPMマルチモジュール構成", "status": "pending" },
+        { "id": "M0-T3", "name": "TCAセットアップ", "status": "pending" },
+        { "id": "M0-T4", "name": "Supabaseクライアント初期化", "status": "pending" },
+        { "id": "M0-T5", "name": "DesignSystemモジュール骨格", "status": "pending" },
+        { "id": "M0-T6", "name": "GitHub Actions CI セットアップ", "status": "pending" },
+        { "id": "M0-T7", "name": "Sentry SDK 統合", "status": "pending" },
+        { "id": "M0-T8", "name": "String Catalog 基盤", "status": "pending" }
+      ]
+    },
+    {
+      "id": "M1",
+      "name": "チーム・試合・サービス順",
+      "status": "pending",
+      "tasks": [
+        { "id": "M1-T1", "name": "Team/Player モデル定義", "status": "pending" },
+        { "id": "M1-T2", "name": "Match/Set/MatchMember モデル定義", "status": "pending" },
+        { "id": "M1-T3", "name": "ServiceOrderEngine ロジック実装", "status": "pending" },
+        { "id": "M1-T4", "name": "選手交代時の順番引継ぎロジック", "status": "pending" },
+        { "id": "M1-T5", "name": "再交代制限ロジック", "status": "pending" },
+        { "id": "M1-T6", "name": "セット間引き継ぎロジック", "status": "pending" },
+        { "id": "M1-T7", "name": "TeamManagementFeature（選手15人マスタ）", "status": "pending" },
+        { "id": "M1-T8", "name": "MatchSetupFeature（試合作成）", "status": "pending" },
+        { "id": "M1-T9", "name": "前回スタメンコピー機能", "status": "pending" },
+        { "id": "M1-T10", "name": "ServiceOrderEngineTests（厚く）", "status": "pending" }
+      ]
+    },
+    {
+      "id": "M2",
+      "name": "入力UI コア",
+      "status": "pending",
+      "tasks": [
+        { "id": "M2-T1", "name": "Rally/Play モデル定義", "status": "pending" },
+        { "id": "M2-T2", "name": "RallyTimelineモジュール", "status": "pending" },
+        { "id": "M2-T3", "name": "MatchInputFeature 骨格", "status": "pending" },
+        { "id": "M2-T4", "name": "コートタップUI", "status": "pending" },
+        { "id": "M2-T5", "name": "選手選択UI", "status": "pending" },
+        { "id": "M2-T6", "name": "プレー種別ボタン群", "status": "pending" },
+        { "id": "M2-T7", "name": "評価4段階ボタン（信号機メタファー）", "status": "pending" },
+        { "id": "M2-T8", "name": "ラリータイムライン表示", "status": "pending" },
+        { "id": "M2-T9", "name": "クイックモード", "status": "pending" },
+        { "id": "M2-T10", "name": "スタンダードモード", "status": "pending" },
+        { "id": "M2-T11", "name": "詳細モード", "status": "pending" },
+        { "id": "M2-T12", "name": "アンドゥロジック（5ステップ）", "status": "pending" },
+        { "id": "M2-T13", "name": "直前ラリー編集UI", "status": "pending" },
+        { "id": "M2-T14", "name": "自/相手切替", "status": "pending" },
+        { "id": "M2-T15", "name": "タイムアウト入力", "status": "pending" },
+        { "id": "M2-T16", "name": "選手交代入力", "status": "pending" },
+        { "id": "M2-T17", "name": "Hapticフィードバック", "status": "pending" }
+      ]
+    },
+    {
+      "id": "M3",
+      "name": "KPI計算・リアルタイム表示",
+      "status": "pending",
+      "tasks": [
+        { "id": "M3-T1", "name": "StatsEngine（アタック決定率/効果率）", "status": "pending" },
+        { "id": "M3-T2", "name": "StatsEngine（レセプション）", "status": "pending" },
+        { "id": "M3-T3", "name": "StatsEngine（サーブ統計）", "status": "pending" },
+        { "id": "M3-T4", "name": "StatsEngine（ブロック・ディグ・セット）", "status": "pending" },
+        { "id": "M3-T5", "name": "アシスト自動計算", "status": "pending" },
+        { "id": "M3-T6", "name": "連続得点判定（3点以上ハイライト）", "status": "pending" },
+        { "id": "M3-T7", "name": "MatchViewerFeature 骨格", "status": "pending" },
+        { "id": "M3-T8", "name": "KPI ダッシュボードUI", "status": "pending" },
+        { "id": "M3-T9", "name": "得点推移グラフ（TOマーカー含む）", "status": "pending" },
+        { "id": "M3-T10", "name": "選手別/セット別/フォーメーション別フィルタ", "status": "pending" },
+        { "id": "M3-T11", "name": "StatsEngineTests（90%カバレッジ）", "status": "pending" }
+      ]
+    },
+    {
+      "id": "M4",
+      "name": "同期・認証",
+      "status": "pending",
+      "tasks": [
+        { "id": "M4-T1", "name": "Supabase スキーマ定義（マイグレーション）", "status": "pending" },
+        { "id": "M4-T2", "name": "Row Level Security 設定", "status": "pending" },
+        { "id": "M4-T3", "name": "AuthFeature（Sign in with Apple）", "status": "pending" },
+        { "id": "M4-T4", "name": "SyncEngine 実装", "status": "pending" },
+        { "id": "M4-T5", "name": "ローカルバッファリング", "status": "pending" },
+        { "id": "M4-T6", "name": "オフライン検知（NetworkMonitor）", "status": "pending" },
+        { "id": "M4-T7", "name": "指数バックオフ再送", "status": "pending" },
+        { "id": "M4-T8", "name": "Realtime購読（Viewer）", "status": "pending" },
+        { "id": "M4-T9", "name": "試合コード生成・検証", "status": "pending" },
+        { "id": "M4-T10", "name": "Recorder衝突防止", "status": "pending" },
+        { "id": "M4-T11", "name": "10秒ごとState スナップショット", "status": "pending" },
+        { "id": "M4-T12", "name": "起動時クラッシュ復元ダイアログ", "status": "pending" }
+      ]
+    },
+    {
+      "id": "M5",
+      "name": "振り返り・PDF/CSV出力",
+      "status": "pending",
+      "tasks": [
+        { "id": "M5-T1", "name": "ReviewFeature 骨格", "status": "pending" },
+        { "id": "M5-T2", "name": "試合終了→振り返り画面遷移", "status": "pending" },
+        { "id": "M5-T3", "name": "PDFGenerator（試合サマリ）", "status": "pending" },
+        { "id": "M5-T4", "name": "CSV出力", "status": "pending" },
+        { "id": "M5-T5", "name": "iOS共有シート連携", "status": "pending" },
+        { "id": "M5-T6", "name": "削除前バックアップJSON生成", "status": "pending" }
+      ]
+    },
+    {
+      "id": "M6",
+      "name": "動画後付け同期",
+      "status": "pending",
+      "tasks": [
+        { "id": "M6-T1", "name": "動画ファイルアップロードUI", "status": "pending" },
+        { "id": "M6-T2", "name": "試合開始時刻同期UI", "status": "pending" },
+        { "id": "M6-T3", "name": "プレー→動画タイムスタンプ計算", "status": "pending" },
+        { "id": "M6-T4", "name": "数値クリック→動画再生（簡易版）", "status": "pending" }
+      ]
+    },
+    {
+      "id": "M7",
+      "name": "エラーハンドリング・障害時UX",
+      "status": "pending",
+      "tasks": [
+        { "id": "M7-T1", "name": "AppError 設計・グローバルエラーハンドリング", "status": "pending" },
+        { "id": "M7-T2", "name": "ネット切断時のオフライン継続UX", "status": "pending" },
+        { "id": "M7-T3", "name": "Supabase書き込み失敗時の再送", "status": "pending" },
+        { "id": "M7-T4", "name": "試合コード誤入力時のメッセージング", "status": "pending" },
+        { "id": "M7-T5", "name": "Recorderクラッシュリカバリ", "status": "pending" },
+        { "id": "M7-T6", "name": "バッテリー低下警告", "status": "pending" },
+        { "id": "M7-T7", "name": "Sign in with Apple失敗時のフォールバック", "status": "pending" },
+        { "id": "M7-T8", "name": "同一試合への2人目Recorder検知", "status": "pending" },
+        { "id": "M7-T9", "name": "データ整合性バリデーション", "status": "pending" },
+        { "id": "M7-T10", "name": "スキーマ自動マイグレーション", "status": "pending" },
+        { "id": "M7-T11", "name": "重大度別のエラー表現UI", "status": "pending" }
+      ]
+    },
+    {
+      "id": "M8",
+      "name": "観測性・クラッシュレポート",
+      "status": "pending",
+      "tasks": [
+        { "id": "M8-T1", "name": "Sentry SDK 完全統合", "status": "pending" },
+        { "id": "M8-T2", "name": "OSLog カテゴリ設計", "status": "pending" },
+        { "id": "M8-T3", "name": "重要操作のbreadcrumbs", "status": "pending" },
+        { "id": "M8-T4", "name": "パフォーマンスモニタリング", "status": "pending" },
+        { "id": "M8-T5", "name": "クラッシュレポートテスト" , "status": "pending" }
+      ]
+    }
+  ],
+  "decisions_log": [
+    {
+      "date": "2026-05-02",
+      "decision": "全要件の確定とドキュメント生成を完了",
+      "reference": "docs/10_DESIGN_DECISIONS.md"
+    },
+    {
+      "date": "2026-05-02",
+      "decision": "プロダクト名を Lumi に決定（Bundle ID: com.muramoto-co.lumi、副題: Lumi — Volleyball Scouting）",
+      "reference": "docs/10_DESIGN_DECISIONS.md#adr-027"
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "Q-001",
+      "question": "アタックコース詳細記録のUI：タップ式 vs スワイプジェスチャー",
+      "raised_at": "2026-05-02",
+      "status": "open",
+      "context": "M2-T11 実装時に決定",
+      "due_milestone": "M2"
+    },
+    {
+      "id": "Q-002",
+      "question": "動画同期のタイムスタンプずれの許容範囲（1秒？2秒？）",
+      "raised_at": "2026-05-02",
+      "status": "open",
+      "context": "M6 実装時にユーザビリティテストで決定",
+      "due_milestone": "M6"
+    },
+    {
+      "id": "Q-003",
+      "question": "選手ポジション傾向フィールドのUIでの活用方法",
+      "raised_at": "2026-05-02",
+      "status": "open",
+      "context": "データモデルには持つがUI未活用",
+      "due_milestone": "Phase 1.5"
+    }
+  ],
+  "session_log": [
+    {
+      "date": "2026-05-02",
+      "summary": "プロジェクト要件定義・全ドキュメント生成完了。プロダクト名を Lumi に決定。実装はまだ未着手",
+      "next_action": "M0-T1: Xcodeプロジェクト初期化（プロダクト名 Lumi、Bundle ID com.muramoto-co.lumi）から着手。Xcodeでの新規プロジェクト作成（GUI操作）はユーザーが手動で実施予定"
+    }
+  ],
+  "metrics": {
+    "total_tasks": 70,
+    "completed_tasks": 1,
+    "in_progress_tasks": 0,
+    "pending_tasks": 69,
+    "test_coverage": {
+      "logic_layer": null,
+      "tca_reducer": null,
+      "ui_layer": "snapshot_only_planned"
+    }
+  },
+  "last_updated": "2026-05-03T00:00:00+09:00",
+  "last_updated_by": "claude-code"
+}
