@@ -25,7 +25,7 @@
 | クラウド | Supabase (PostgreSQL + Realtime) |
 | 認証 | Sign in with Apple + Supabase Auth |
 | 監視 | Sentry + OSLog |
-| テスト | Swift Testing + TCA TestStore + swift-snapshot-testing |
+| テスト | Swift Testing (`@Test`) + TCA TestStore + swift-snapshot-testing |
 | CI | GitHub Actions |
 | 最低OS | iOS 26+ / iPadOS 26+ |
 
@@ -57,7 +57,7 @@ xcodebuild -project Lumi.xcodeproj -scheme Lumi test
 ## 開発規約
 
 ### 言語ルール
-- コード・変数名・コミット: **英語**
+- コード・変数名・コミット・型定義・スキーマ: **英語**
 - ドキュメント・UI・コメント: **日本語**
 
 ### TDD必須
@@ -79,6 +79,14 @@ feat(ios): / fix(ios): / test(kit): / docs: / refactor: / chore:
 - `develop` — 開発統合
 - `feature/xxx` — 機能開発
 - `fix/xxx` — バグ修正
+
+### エラーハンドリング
+- Swift Result型 + async/await
+- 日本語エラーメッセージ（ユーザー向け）
+
+### セキュリティ
+- APIキー (Supabase等) はクライアントに露出させない
+- シークレットはリポジトリにコミットしない
 
 ## TCA パターン
 - Feature = `@Reducer` + View のペア
@@ -113,7 +121,7 @@ feat(ios): / fix(ios): / test(kit): / docs: / refactor: / chore:
 | テストカバレッジ (ロジック) | > 90% |
 
 ## セッション間の継続
-- `docs/progress.json` — 進捗・タスク状態・意思決定ログ・セッション記録
+- `docs/progress.json` — 進捗・タスク状態・意思決定ログ・セッション記録 (`progress.schema.json` で検証)
 - セッション開始時に必ず `progress.json` と該当マイルストーンタスクファイルを確認
 - 作業中はタスクステータスを更新、セッション終了時に `session_log` に要約を追記
 

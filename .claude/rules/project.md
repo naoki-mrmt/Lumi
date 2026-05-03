@@ -13,12 +13,12 @@
 3. **Refactor**: コードを改善 (テストは通ったまま)
 
 ### テスト対象
-- Domain層テスト（最重要・最多）: XCTest、Protocol準拠テスト
-- TCA Feature テスト: TestStore + @Dependency モック
-- Persistence テスト: インメモリModelContainer
+- Domain層テスト（最重要・最多）: Swift Testing、Protocol準拠テスト
+- TCA Feature テスト: TestStore + @Dependency override
+- Persistence テスト: インメモリ ModelContainer
 
 ### テストを書かなくて良いもの
-- 純粋なView (SwiftUI Preview で確認)
+- 純粋な View (SwiftUI Preview で確認)
 - 外部ライブラリの薄いラッパー
 
 ## ドキュメントファースト
@@ -27,8 +27,9 @@
 
 ## コミット規約
 Conventional Commits + スコープ:
-- `feat(mac):` / `feat(ios):` / `feat(kit):`
-- `fix(mac):` / `test(kit):` / `docs:` / `refactor:` / `chore:`
+- `feat(ios):` / `fix(ios):` / `test(ios):`
+- `feat(kit):` / `test(kit):` (SPMモジュール)
+- `docs:` / `refactor:` / `chore:`
 
 ## ブランチ戦略
 - `main` — 本番
@@ -41,18 +42,17 @@ Conventional Commits + スコープ:
 - 日本語エラーメッセージ（ユーザー向け）
 
 ## セキュリティ
-- APIキーはクライアントに露出させない
+- APIキー (Supabase等) はクライアントに露出させない
 - シークレットはリポジトリにコミットしない
-- パスワードフィールド検出時は音声入力を自動無効化
 
 ## ビルド & テスト
 ```bash
-# Primary dev loop (fast)
-cd Packages/CalameKit && swift test
+# Xcodeプロジェクトビルド
+xcodebuild -project Lumi.xcodeproj -scheme Lumi -destination 'platform=iOS Simulator,name=iPad Pro 13-inch (M4)' build
 
-# Full project build
-xcodebuild -project Calame.xcodeproj -scheme Calame-macOS -destination 'platform=macOS' build
+# テスト実行
+xcodebuild -project Lumi.xcodeproj -scheme Lumi -destination 'platform=iOS Simulator,name=iPad Pro 13-inch (M4)' test
 
-# Full project test
-xcodebuild -project Calame.xcodeproj -scheme Calame-macOS -destination 'platform=macOS' test
+# SPMモジュールテスト (Packages/LumiKit 構成後)
+# cd Packages/LumiKit && swift test
 ```
