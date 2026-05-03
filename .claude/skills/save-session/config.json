@@ -1,0 +1,5 @@
+{
+  "sessions_dir": ".claude/sessions",
+  "max_sessions": 50,
+  "auto_save_interval_minutes": 0
+}
