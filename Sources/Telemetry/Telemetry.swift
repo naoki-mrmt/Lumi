@@ -3,12 +3,20 @@
 // docs/specs/M8-observability.md 準拠
 
 import Foundation
+import os
 import Sentry
 import OSLog
 
 public enum Telemetry {
     /// Sentry SDK が起動済みかどうか。breadcrumb / measure のガードに使う。
-    nonisolated(unsafe) private static var sdkStarted = false
+    /// `OSAllocatedUnfairLock` で保護し、Swift 6 strict concurrency 下でも race-free。
+    private static let sdkStartedLock = OSAllocatedUnfairLock<Bool>(initialState: false)
+    private static var sdkStarted: Bool {
+        sdkStartedLock.withLock { $0 }
+    }
+    private static func setSDKStarted(_ value: Bool) {
+        sdkStartedLock.withLock { $0 = value }
+    }
 
     /// Sentry SDK 初期化。M0 で骨格、M8 で本格化。
     public static func start(
@@ -32,7 +40,7 @@ public enum Telemetry {
             #endif
             options.beforeSend = sanitizeEvent
         }
-        sdkStarted = true
+        setSDKStarted(true)
 
         Logger.telemetryInternal.info("Sentry initialized: env=\(environment, privacy: .public)")
     }

@@ -52,10 +52,19 @@ public struct OpponentDatabaseFeature: Sendable {
             case .onAppear:
                 let matches = state.allMatches
                 return .run { send in
-                    // 派生 (matches から自動生成) と 永続 (LocalStore に保存済の編集) をマージ
+                    // 派生 (matches から自動生成、毎回 UUID が変わる) と
+                    // 永続 (LocalStore に既に保存済) を name で突き合わせる。
+                    // 派生のうち永続に同名が無ければ初回エンカウントとして即座に save し、
+                    // 以降は永続側 id を使い回す。これにより同名衝突や id ドリフトを防ぐ。
                     let derived = OpponentDatabase().opponents(from: matches)
                     let stored = (try? await localStore.fetchOpponentTeams()) ?? []
                     let merged = mergeOpponents(derived: derived, stored: stored)
+
+                    // 永続に未登録のもの (name 一致なし) をバックグラウンドで永続化
+                    let storedNames = Set(stored.map(\.name))
+                    for opp in merged where !storedNames.contains(opp.name) {
+                        try? await localStore.saveOpponentTeam(opp)
+                    }
                     await send(.opponentsLoaded(merged))
                 }
 
@@ -114,15 +123,23 @@ public struct OpponentDatabaseFeature: Sendable {
 }
 
 /// 派生 (matches → 自動生成) と 永続 (LocalStore) をマージ。
-/// 名前が一致するエントリは永続側のメタデータ (notes / maskedName) を上書きで保持。
+/// name 一致するエントリは永続側の id とメタデータ (notes / maskedName) を採用し、
+/// 派生側の encounteredMatchIds を保持する (試合回数情報)。
 private func mergeOpponents(derived: [OpponentTeam], stored: [OpponentTeam]) -> [OpponentTeam] {
     var byName: [String: OpponentTeam] = [:]
     for d in derived { byName[d.name] = d }
     for s in stored {
-        if var existing = byName[s.name] {
-            existing.maskedName = s.maskedName
-            existing.notes = s.notes
-            byName[s.name] = existing
+        if let derivedSame = byName[s.name] {
+            // 永続側 id + メタを採用、派生側の matches 数を取り込み
+            byName[s.name] = OpponentTeam(
+                id: s.id,
+                name: s.name,
+                maskedName: s.maskedName,
+                encounteredMatchIds: derivedSame.encounteredMatchIds,
+                notes: s.notes,
+                createdAt: s.createdAt,
+                updatedAt: Date()
+            )
         } else {
             byName[s.name] = s
         }

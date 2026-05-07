@@ -105,6 +105,15 @@ public actor InMemoryLocalStoreActor {
     public func saveUserProfile(_ profile: UserProfile) {
         userProfiles[profile.id] = profile
     }
+
+    public func wipeAll() {
+        teams.removeAll()
+        players.removeAll()
+        matches.removeAll()
+        opponentTeams.removeAll()
+        annotations.removeAll()
+        userProfiles.removeAll()
+    }
 }
 
 extension LocalStore {
@@ -128,7 +137,8 @@ extension LocalStore {
             saveAnnotation: { await store.saveAnnotation($0) },
             deleteAnnotation: { await store.deleteAnnotation($0) },
             fetchUserProfile: { await store.fetchUserProfile(id: $0) },
-            saveUserProfile: { await store.saveUserProfile($0) }
+            saveUserProfile: { await store.saveUserProfile($0) },
+            wipeAll: { await store.wipeAll() }
         )
     }
 
@@ -142,6 +152,15 @@ extension LocalStore {
         fetchMatches: { _ in fatalError("LocalStore.fetchMatches unimplemented") },
         saveMatch: { _ in fatalError("LocalStore.saveMatch unimplemented") },
         fetchLastMatch: { _ in fatalError("LocalStore.fetchLastMatch unimplemented") },
-        findInProgressMatch: { fatalError("LocalStore.findInProgressMatch unimplemented") }
+        findInProgressMatch: { fatalError("LocalStore.findInProgressMatch unimplemented") },
+        fetchOpponentTeams: { fatalError("LocalStore.fetchOpponentTeams unimplemented") },
+        saveOpponentTeam: { _ in fatalError("LocalStore.saveOpponentTeam unimplemented") },
+        deleteOpponentTeam: { _ in fatalError("LocalStore.deleteOpponentTeam unimplemented") },
+        fetchAnnotations: { _ in fatalError("LocalStore.fetchAnnotations unimplemented") },
+        saveAnnotation: { _ in fatalError("LocalStore.saveAnnotation unimplemented") },
+        deleteAnnotation: { _ in fatalError("LocalStore.deleteAnnotation unimplemented") },
+        fetchUserProfile: { _ in fatalError("LocalStore.fetchUserProfile unimplemented") },
+        saveUserProfile: { _ in fatalError("LocalStore.saveUserProfile unimplemented") },
+        wipeAll: { fatalError("LocalStore.wipeAll unimplemented") }
     )
 }

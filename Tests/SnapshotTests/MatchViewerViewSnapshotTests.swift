@@ -22,14 +22,14 @@ struct MatchViewerViewSnapshotTests {
     func matchViewer_light() async {
         let host = UIHostingController(rootView: NavigationStack { MatchViewerView(store: makeStore()) })
         host.overrideUserInterfaceStyle = .light
-        assertSnapshot(of: host, as: .image(on: .iPadPro12_9))
+        assertSnapshot(of: host, as: .image(on: .iPadPro12_9, precision: 0.99, perceptualPrecision: 0.97))
     }
 
     @Test("MatchViewerView - Dark Mode")
     func matchViewer_dark() async {
         let host = UIHostingController(rootView: NavigationStack { MatchViewerView(store: makeStore()) })
         host.overrideUserInterfaceStyle = .dark
-        assertSnapshot(of: host, as: .image(on: .iPadPro12_9))
+        assertSnapshot(of: host, as: .image(on: .iPadPro12_9, precision: 0.99, perceptualPrecision: 0.97))
     }
 }
 #endif

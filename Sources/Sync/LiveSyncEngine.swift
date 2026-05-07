@@ -98,14 +98,16 @@ public final class LiveSyncEngine: SyncEngine, @unchecked Sendable {
                     return
                 }
 
-                Task {
+                // 各 stream 用の Task を保持し、onTermination でまとめて cancel する。
+                // (cancel しないと channel 切断後も子 Task が残ってリークする)
+                let t1 = Task {
                     for await action in playInserts {
                         if let play = try? action.decodeRecord(as: Play.self, decoder: jsonDecoder) {
                             continuation.yield(.playAdded(play))
                         }
                     }
                 }
-                Task {
+                let t2 = Task {
                     for await action in rallyUpdates {
                         if let rally = try? action.decodeRecord(as: Rally.self, decoder: jsonDecoder),
                            rally.endedAt != nil {
@@ -113,14 +115,14 @@ public final class LiveSyncEngine: SyncEngine, @unchecked Sendable {
                         }
                     }
                 }
-                Task {
+                let t3 = Task {
                     for await action in timeoutInserts {
                         if let to = try? action.decodeRecord(as: Timeout.self, decoder: jsonDecoder) {
                             continuation.yield(.timeoutCalled(to))
                         }
                     }
                 }
-                Task {
+                let t4 = Task {
                     for await action in subInserts {
                         if let sub = try? action.decodeRecord(as: Substitution.self, decoder: jsonDecoder) {
                             continuation.yield(.substitutionMade(sub))
@@ -129,6 +131,7 @@ public final class LiveSyncEngine: SyncEngine, @unchecked Sendable {
                 }
 
                 continuation.onTermination = { _ in
+                    t1.cancel(); t2.cancel(); t3.cancel(); t4.cancel()
                     Task { await channel.unsubscribe() }
                 }
             }

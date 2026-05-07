@@ -48,6 +48,25 @@ struct AppFeatureAuthGateTests {
         }
     }
 
+    @Test("[exhaustive] EmailAuth → session 伝播 + emailAuth クリア (extra Action 無し)")
+    func sessionPropagatesExhaustively() async {
+        let session = AuthSession(userId: UUID(), email: "test@example.com", accessToken: "tok")
+        var initial = AppFeature.State(isAuthRequired: true)
+        initial.emailAuth = EmailAuthFeature.State()
+        let store = await TestStore(initialState: initial) {
+            AppFeature()
+        } withDependencies: {
+            $0.localStore = .inMemory()
+            $0.supabaseAuthClient = MockSupabaseAuthClient()
+        }
+        // exhaustivity ON (デフォルト) — 余分な Action / state 変化があれば fail
+
+        await store.send(.emailAuth(.sessionReceived(session))) {
+            $0.session = session
+            $0.emailAuth = nil
+        }
+    }
+
     @Test("EmailAuth でサインイン成功 → AppFeature.session に伝播 + emailAuth が閉じる")
     func sessionPropagatesFromEmailAuth() async {
         let session = AuthSession(userId: UUID(), email: "test@example.com", accessToken: "tok")

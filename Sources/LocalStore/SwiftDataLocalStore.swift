@@ -219,6 +219,19 @@ public final class SwiftDataStore {
         }
         try context.save()
     }
+
+    // MARK: - Wipe (アカウント削除時の全消去)
+
+    public func wipeAll() throws {
+        // CASCADE が SwiftData にはないので各 record を順に delete
+        try context.delete(model: PlayAnnotationRecord.self)
+        try context.delete(model: OpponentTeamRecord.self)
+        try context.delete(model: MatchRecord.self)
+        try context.delete(model: PlayerRecord.self)
+        try context.delete(model: TeamRecord.self)
+        try context.delete(model: UserProfileRecord.self)
+        try context.save()
+    }
 }
 
 extension LocalStore {
@@ -243,7 +256,8 @@ extension LocalStore {
             saveAnnotation: { ann in try await MainActor.run { try store.saveAnnotation(ann) } },
             deleteAnnotation: { id in try await MainActor.run { try store.deleteAnnotation(id) } },
             fetchUserProfile: { id in try await MainActor.run { try store.fetchUserProfile(id: id) } },
-            saveUserProfile: { profile in try await MainActor.run { try store.saveUserProfile(profile) } }
+            saveUserProfile: { profile in try await MainActor.run { try store.saveUserProfile(profile) } },
+            wipeAll: { try await MainActor.run { try store.wipeAll() } }
         )
     }
 }

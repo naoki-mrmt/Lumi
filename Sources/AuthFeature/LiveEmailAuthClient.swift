@@ -46,7 +46,15 @@ public final class LiveEmailAuthClient: EmailAuthClient, @unchecked Sendable {
                 accessToken: session.accessToken
             )
         } catch {
-            throw EmailAuthError.wrongPassword
+            // Supabase Auth の代表的エラーは message に "Invalid login credentials" を含む。
+            // それ以外 (network / rate limit / 5xx) は unknown として伝播し、UI でリトライ判断可。
+            let msg = error.localizedDescription
+            if msg.localizedCaseInsensitiveContains("invalid login")
+                || msg.localizedCaseInsensitiveContains("invalid credentials")
+                || msg.localizedCaseInsensitiveContains("invalid email or password") {
+                throw EmailAuthError.wrongPassword
+            }
+            throw EmailAuthError.unknown(msg)
         }
     }
 

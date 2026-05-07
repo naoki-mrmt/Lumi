@@ -62,8 +62,8 @@ Lumi は **9人制バレーボール専用** のスカウティングアプリ�
 ```bash
 git clone https://github.com/naoki-mrmt/Lumi.git
 cd Lumi
-make bootstrap          # Config.swift 作成 + SPM resolve
-# Lumi/Config.swift に Supabase URL / anon key / Sentry DSN を記入
+make bootstrap          # Config.local.xcconfig 作成 + SPM resolve
+# Config.local.xcconfig に Supabase URL / anon key / Sentry DSN を記入
 make build              # iPad Simulator 向けビルド
 make test               # SPM 全テスト
 ```

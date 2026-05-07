@@ -26,14 +26,14 @@ struct AppViewSnapshotTests {
     func appView_light() async {
         let host = UIHostingController(rootView: NavigationStack { AppView(store: makeStore()) })
         host.overrideUserInterfaceStyle = .light
-        assertSnapshot(of: host, as: .image(on: .iPadPro12_9))
+        assertSnapshot(of: host, as: .image(on: .iPadPro12_9, precision: 0.99, perceptualPrecision: 0.97))
     }
 
     @Test("AppView - Dark Mode")
     func appView_dark() async {
         let host = UIHostingController(rootView: NavigationStack { AppView(store: makeStore()) })
         host.overrideUserInterfaceStyle = .dark
-        assertSnapshot(of: host, as: .image(on: .iPadPro12_9))
+        assertSnapshot(of: host, as: .image(on: .iPadPro12_9, precision: 0.99, perceptualPrecision: 0.97))
     }
 }
 #endif

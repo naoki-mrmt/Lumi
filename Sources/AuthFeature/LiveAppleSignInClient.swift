@@ -33,6 +33,8 @@ public final class LiveAppleSignInClient: NSObject, AppleSignInClient, @unchecke
 }
 
 private final class AuthDelegate: NSObject, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+    /// `objc_setAssociatedObject` に渡すユニークなキー。
+    /// 1 byte の定数を 1 度だけ allocate して静的に保持する (allocate は init 時の 1 回のみ、leak とは別)。
     nonisolated(unsafe) static let associationKey: UnsafeRawPointer = {
         let p = UnsafeMutablePointer<UInt8>.allocate(capacity: 1)
         p.pointee = 0

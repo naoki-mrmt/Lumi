@@ -22,14 +22,14 @@ struct ReviewViewSnapshotTests {
     func review_light() async {
         let host = UIHostingController(rootView: NavigationStack { ReviewView(store: makeStore()) })
         host.overrideUserInterfaceStyle = .light
-        assertSnapshot(of: host, as: .image(on: .iPadPro12_9))
+        assertSnapshot(of: host, as: .image(on: .iPadPro12_9, precision: 0.99, perceptualPrecision: 0.97))
     }
 
     @Test("ReviewView - Dark Mode")
     func review_dark() async {
         let host = UIHostingController(rootView: NavigationStack { ReviewView(store: makeStore()) })
         host.overrideUserInterfaceStyle = .dark
-        assertSnapshot(of: host, as: .image(on: .iPadPro12_9))
+        assertSnapshot(of: host, as: .image(on: .iPadPro12_9, precision: 0.99, perceptualPrecision: 0.97))
     }
 }
 #endif

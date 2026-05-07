@@ -2,7 +2,7 @@
 
 このドキュメントでは、Lumi を実際の Supabase / Apple Developer / Sentry / StoreKit 環境に接続し、TestFlight 配信や App Store 審査に進むための手順をまとめている。所要時間は 60〜90 分。
 
-> **重要**: 本リポは公開前提のため、すべての秘匿情報は `Lumi/Config.swift` または `.env` (どちらも .gitignore 済) に閉じ込め、リポジトリには絶対にコミットしないこと。`make secrets-scan` で確認可能。
+> **重要**: 本リポは公開前提のため、すべての秘匿情報は `Config.local.xcconfig` または `.env` (どちらも .gitignore 済) に閉じ込め、リポジトリには絶対にコミットしないこと。`make secrets-scan` で確認可能。
 
 ---
 
@@ -264,21 +264,20 @@ GitHub リポ → **Settings → Secrets and variables → Actions → New repos
 ### 5.2 ワークフローからの参照
 
 ```yaml
-- name: Inject secrets
+- name: Inject secrets into Config.local.xcconfig
   env:
     SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
     SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
     SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
   run: |
-    cat > Lumi/Config.swift <<EOF
-    import Foundation
-    enum Config {
-        static let supabaseURL = "$SUPABASE_URL"
-        static let supabaseAnonKey = "$SUPABASE_ANON_KEY"
-        static let sentryDSN = "$SENTRY_DSN"
-    }
+    cat > Config.local.xcconfig <<EOF
+    SUPABASE_URL = ${SUPABASE_URL//\/\//\/\$()\/}
+    SUPABASE_ANON_KEY = $SUPABASE_ANON_KEY
+    SENTRY_DSN = ${SENTRY_DSN//\/\//\/\$()\/}
     EOF
 ```
+
+> URL の `//` は xcconfig コメント開始扱いされるので `/$()/` に変換する。
 
 ---
 
@@ -361,4 +360,4 @@ Xcode から:
 - [ ] Sentry Dashboard で test event が届く (`SentrySDK.capture(message:)` で確認)
 - [ ] GitHub Actions の CI が緑 (secrets 追加後)
 - [ ] `make secrets-scan` がパス
-- [ ] `git status` で `Lumi/Config.swift` が untracked であることを確認 (.gitignore 効いてる)
+- [ ] `git status` で `Config.local.xcconfig` が untracked であることを確認 (.gitignore 効いてる)

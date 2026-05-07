@@ -31,6 +31,9 @@ public struct LocalStore: Sendable {
     public var fetchUserProfile: @Sendable (_ id: UUID) async throws -> UserProfile?
     public var saveUserProfile: @Sendable (UserProfile) async throws -> Void
 
+    /// アカウント削除時に全エンティティを消去 (teams/players/matches/opponentTeams/annotations/userProfiles)
+    public var wipeAll: @Sendable () async throws -> Void
+
     public init(
         fetchTeams: @escaping @Sendable () async throws -> [Team],
         saveTeam: @escaping @Sendable (Team) async throws -> Void,
@@ -48,7 +51,8 @@ public struct LocalStore: Sendable {
         saveAnnotation: @escaping @Sendable (PlayAnnotation) async throws -> Void = { _ in },
         deleteAnnotation: @escaping @Sendable (UUID) async throws -> Void = { _ in },
         fetchUserProfile: @escaping @Sendable (UUID) async throws -> UserProfile? = { _ in nil },
-        saveUserProfile: @escaping @Sendable (UserProfile) async throws -> Void = { _ in }
+        saveUserProfile: @escaping @Sendable (UserProfile) async throws -> Void = { _ in },
+        wipeAll: @escaping @Sendable () async throws -> Void = {}
     ) {
         self.fetchTeams = fetchTeams
         self.saveTeam = saveTeam
@@ -67,6 +71,7 @@ public struct LocalStore: Sendable {
         self.deleteAnnotation = deleteAnnotation
         self.fetchUserProfile = fetchUserProfile
         self.saveUserProfile = saveUserProfile
+        self.wipeAll = wipeAll
     }
 }
 

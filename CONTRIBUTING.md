@@ -24,7 +24,7 @@ Lumi への貢献を歓迎します。
 git clone https://github.com/naoki-mrmt/Lumi.git
 cd Lumi
 make bootstrap
-# Lumi/Config.swift を編集して Supabase URL / anon key / Sentry DSN を記入
+# Config.local.xcconfig を編集して Supabase URL / anon key / Sentry DSN を記入
 ```
 
 ## ブランチ戦略
@@ -135,7 +135,7 @@ PR / push で以下が自動実行:
 
 ### コミットしてはいけないもの
 
-- `Lumi/Config.swift` (Supabase URL / anon key / Sentry DSN)
+- `Config.local.xcconfig` (Supabase URL / anon key / Sentry DSN)
 - `.env` / `.env.local`
 - `*.p8` / `*.p12` / `*.mobileprovision`
 - Apple Developer / App Store Connect の API キー

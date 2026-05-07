@@ -288,6 +288,11 @@
       "date": "2026-05-07",
       "summary": "C 系 (xcconfig + Phase 2.4 公開要件) 4 項目を対応。C1 xcconfig 結線: Config.xcconfig (committed、空デフォルト) + Config.local.xcconfig.template (committed) + Config.local.xcconfig (.gitignore) の三層構造、#include? で local override、INFOPLIST_KEY_* は Apple 既知キーのみなので Info.plist 実ファイルを作成しリポ root へ配置 (synchronized group の二重コピー回避)、GENERATE_INFOPLIST_FILE=NO + INFOPLIST_FILE=Info.plist + baseConfigurationReference を Debug/Release 双方に設定。Bundle.main から SUPABASE_URL/SUPABASE_ANON_KEY/SENTRY_DSN を読めることを実機ビルドで確認、Config.swift.template は legacy として削除、Makefile bootstrap を Config.local.xcconfig コピーに変更、SETUP_PRODUCTION.md §4 を全面書き換え。C3a LegalFeature 実コンテンツ: 利用規約 11 条、プライバシーポリシー 10 条 (個人情報定義/取得情報/利用目的/第三者提供 (Supabase/Sentry/Apple)/保管/開示請求/Cookie/児童プライバシー/変更/問い合わせ) を本文化。C3b アカウント削除 UI: SupabaseAuthClient.deleteAccount() を protocol に追加、Mock + Live (Edge Function 'delete-account' 呼び出し) 実装、AppFeature に deleteAccountTapped/Confirmed/Cancelled/accountDeleted、確認 alert + 削除ボタン (destructive)、accountDeleted で session/team/matches クリア。supabase/functions/delete-account/index.ts (Deno、JWT 検証 + auth.admin.deleteUser) と Makefile functions-deploy 追加。AppFeatureTests に 2 件追加。C3c PrivacyInfo.xcprivacy: NSPrivacyTracking=false、収集データ 4 種 (Email/UserID/Crash/Performance、すべて非トラッキング)、Required Reason API 3 種 (UserDefaults CA92.1 / FileTimestamp C617.1 / SystemBootTime 35F9.1) を宣言、Lumi/ 配下に配置で bundle root 自動コピー確認済。テスト 144/144 緑 (58 スイート、+2 アカウント削除)。SnapshotTests 10/10 緑。iPad iOS 26 ビルド SUCCEEDED。secrets-scan 緑",
       "next_action": "実 Supabase / Apple Developer / Sentry 環境セットアップ → Config.local.xcconfig に値記入 → make functions-deploy で delete-account も含め全 Edge Function デプロイ → TestFlight 配信"
+    },
+    {
+      "date": "2026-05-07",
+      "summary": "コードレビュー (general-purpose agent) で指摘された 🔴 6 件 + 🟡 5 件 + 🟢 2 件をすべて修正。R1: PrivacyInfo.xcprivacy は fileSystemSynchronizedGroups で既に bundle root に正しく配置されていることを確認 (誤検出)。R2: 0007_cascade_user_delete.sql 追加 (profiles/teams/matches FK に ON DELETE CASCADE)。R3: CI を 'iPad Pro 13\" (M5)' 固定から python3 で simctl list を JSON パースして動的選択に変更 (M5/M4/M3 世代差を吸収、ios-build / snapshot-tests 両方に適用)。R4: LocalStore.unimplemented に Phase 2 8 クロージャの fatalError を補完。R5: LiveSyncEngine の subscribe 内 4 つの postgresChange Task を let で保持し onTermination で cancel (リーク防止)。R6: LiveEmailAuthClient.signIn のエラー分類 (Invalid login credentials のみ wrongPassword、それ以外は unknown(message))。R7: AppFeature.body の Children → Reduce 順序固定をコメントで明示 (将来事故源の予防)。R8: Telemetry.sdkStarted を OSAllocatedUnfairLock<Bool> 化、nonisolated(unsafe) 撤廃で Swift 6 strict concurrency race-free。R9: Snapshot Tests 全 10 件に precision: 0.99 / perceptualPrecision: 0.97 を付与 (CI macOS-15 でのフォントレンダリング差吸収)。R11: OpponentDB merge を name 一致 + 永続側 id 採用に変更、初回エンカウント時に saveOpponentTeam を自動実行 (UUID ドリフト防止)。R13: AppleSignIn 1byte allocation (実質プロセス寿命と同じなので leak ではないが意図を明確化)、SWIFT_DEFAULT_ACTOR_ISOLATION=MainActor 環境で nonisolated(unsafe) のまま維持。R14: AppFeatureTests に exhaustive 1 件追加 (sessionPropagatesExhaustively)。R15: SETUP_PRODUCTION.md / README.md / CONTRIBUTING.md の Lumi/Config.swift 参照を Config.local.xcconfig に統一、CI snippet も xcconfig 形式に書き換え。R19: supabase-swift FunctionsClient のデフォルトメソッドが POST であることをソースコードで確認 + LiveSupabaseAuthClient.deleteAccount にコメントで明記。R20: LocalStore に wipeAll() を追加 (InMemory + SwiftData 双方)、AppFeature.deleteAccountConfirmed が成功/失敗に関わらず localStore.wipeAll を呼ぶよう修正 (ゴーストデータ復活防止)。テスト 145/145 緑 (58 スイート、+1 exhaustive)。SnapshotTests 10/10 緑 (precision 緩和後も既存スナップショットと一致)。iPad iOS 26 ビルド SUCCEEDED。secrets-scan 緑",
+      "next_action": "git push → GitHub Actions で snapshot-tests / ios-build / swift-test の 3 job が緑になることを確認。落ちたら CI ログを見てフォント差等で recording する"
     }
   ],
   "metrics": {
@@ -304,6 +309,6 @@
       "ui_layer": "snapshot_only_planned"
     }
   },
-  "last_updated": "2026-05-07T16:00:00+09:00",
+  "last_updated": "2026-05-07T17:00:00+09:00",
   "last_updated_by": "claude-code"
 }

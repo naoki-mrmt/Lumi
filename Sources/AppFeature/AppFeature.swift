@@ -116,8 +116,15 @@ public struct AppFeature: Sendable {
     public init() {}
 
     public var body: some ReducerOf<Self> {
-        // 子 Reducer を先に走らせ、親はその後の post-process でだけ state を nil にする
-        // (ifLet 側の "child action while state was nil" 警告を避けるため)
+        // ⚠️ 順序固定: Children → Reduce
+        //
+        // 親が `case .matchSetup(.matchPrepared)` や `case .emailAuth(.sessionReceived)`
+        // を捕捉する際、自分の handler で `state.matchSetup = nil` のように子状態を nil
+        // に落とす。先に親 Reduce が走ると、後段の ifLet が「child action received while
+        // state was nil」を warning として記録する。子を先に走らせれば子は自分のクロージャを
+        // 使い切ってから親が片付けるので警告が出ない。テストでも同じ前提に依存している
+        // (Tests/AppFeatureTests/AppFeatureTests.swift)。順序を入れ替えるなら親の各
+        // 子-action ハンドラを引数で見直すこと。
         Phase1Children()
         Phase2Children()
         Phase2bChildren()
@@ -185,6 +192,8 @@ public struct AppFeature: Sendable {
                         // Edge Function 失敗時はサインアウトのみで続行 (ユーザは削除リクエストできた状態)
                         try? await supabaseAuth.signOut()
                     }
+                    // ローカル SwiftData も全消去 (ゴーストデータ復活防止)
+                    try? await localStore.wipeAll()
                     await send(.accountDeleted)
                 }
 
