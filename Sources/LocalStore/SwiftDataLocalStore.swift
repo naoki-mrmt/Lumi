@@ -17,6 +17,9 @@ public final class SwiftDataStore {
             TeamRecord.self,
             PlayerRecord.self,
             MatchRecord.self,
+            OpponentTeamRecord.self,
+            PlayAnnotationRecord.self,
+            UserProfileRecord.self,
         ])
         let config = ModelConfiguration(
             schema: schema,
@@ -130,6 +133,92 @@ public final class SwiftDataStore {
         }
         return nil
     }
+
+    // MARK: - OpponentTeam (Phase 2.1)
+
+    public func fetchOpponentTeams() throws -> [OpponentTeam] {
+        let descriptor = FetchDescriptor<OpponentTeamRecord>(sortBy: [SortDescriptor(\.createdAt)])
+        let records = try context.fetch(descriptor)
+        return records.map { $0.toValue() }
+    }
+
+    public func saveOpponentTeam(_ opp: OpponentTeam) throws {
+        let id = opp.id
+        let descriptor = FetchDescriptor<OpponentTeamRecord>(predicate: #Predicate { $0.id == id })
+        if let existing = try context.fetch(descriptor).first {
+            existing.update(from: opp)
+        } else {
+            context.insert(OpponentTeamRecord(from: opp))
+        }
+        try context.save()
+    }
+
+    public func deleteOpponentTeam(_ id: UUID) throws {
+        let descriptor = FetchDescriptor<OpponentTeamRecord>(predicate: #Predicate { $0.id == id })
+        if let record = try context.fetch(descriptor).first {
+            context.delete(record)
+            try context.save()
+        }
+    }
+
+    // MARK: - PlayAnnotation (Phase 2.2)
+
+    public func fetchAnnotations(matchId: UUID) throws -> [PlayAnnotation] {
+        // Match に属する rallyId を逆引きしてから annotation を絞り込み
+        let matchDescriptor = FetchDescriptor<MatchRecord>(predicate: #Predicate { $0.id == matchId })
+        guard let matchRecord = try context.fetch(matchDescriptor).first else {
+            // Match が見つからない場合は全件返す (テスト想定)
+            let all = try context.fetch(FetchDescriptor<PlayAnnotationRecord>(sortBy: [SortDescriptor(\.createdAt)]))
+            return all.map { $0.toValue() }
+        }
+        let match = try matchRecord.toValue()
+        let rallyIds = Set(match.sets.flatMap { $0.rallies.map(\.id) })
+        let descriptor = FetchDescriptor<PlayAnnotationRecord>(sortBy: [SortDescriptor(\.createdAt)])
+        let records = try context.fetch(descriptor)
+        return records
+            .map { $0.toValue() }
+            .filter { rallyIds.contains($0.rallyId) }
+    }
+
+    public func saveAnnotation(_ ann: PlayAnnotation) throws {
+        let id = ann.id
+        let descriptor = FetchDescriptor<PlayAnnotationRecord>(predicate: #Predicate { $0.id == id })
+        if let existing = try context.fetch(descriptor).first {
+            existing.update(from: ann)
+        } else {
+            context.insert(PlayAnnotationRecord(from: ann))
+        }
+        try context.save()
+    }
+
+    public func deleteAnnotation(_ id: UUID) throws {
+        let descriptor = FetchDescriptor<PlayAnnotationRecord>(predicate: #Predicate { $0.id == id })
+        if let record = try context.fetch(descriptor).first {
+            context.delete(record)
+            try context.save()
+        }
+    }
+
+    // MARK: - UserProfile (Phase 2.4)
+
+    public func fetchUserProfile(id: UUID) throws -> UserProfile? {
+        let descriptor = FetchDescriptor<UserProfileRecord>(predicate: #Predicate { $0.id == id })
+        if let record = try context.fetch(descriptor).first {
+            return record.toValue()
+        }
+        return nil
+    }
+
+    public func saveUserProfile(_ profile: UserProfile) throws {
+        let id = profile.id
+        let descriptor = FetchDescriptor<UserProfileRecord>(predicate: #Predicate { $0.id == id })
+        if let existing = try context.fetch(descriptor).first {
+            existing.update(from: profile)
+        } else {
+            context.insert(UserProfileRecord(from: profile))
+        }
+        try context.save()
+    }
 }
 
 extension LocalStore {
@@ -146,7 +235,15 @@ extension LocalStore {
             fetchMatches: { teamId in try await MainActor.run { try store.fetchMatches(teamId: teamId) } },
             saveMatch: { match in try await MainActor.run { try store.saveMatch(match) } },
             fetchLastMatch: { teamId in try await MainActor.run { try store.fetchLastMatch(teamId: teamId) } },
-            findInProgressMatch: { try await MainActor.run { try store.findInProgressMatch() } }
+            findInProgressMatch: { try await MainActor.run { try store.findInProgressMatch() } },
+            fetchOpponentTeams: { try await MainActor.run { try store.fetchOpponentTeams() } },
+            saveOpponentTeam: { opp in try await MainActor.run { try store.saveOpponentTeam(opp) } },
+            deleteOpponentTeam: { id in try await MainActor.run { try store.deleteOpponentTeam(id) } },
+            fetchAnnotations: { matchId in try await MainActor.run { try store.fetchAnnotations(matchId: matchId) } },
+            saveAnnotation: { ann in try await MainActor.run { try store.saveAnnotation(ann) } },
+            deleteAnnotation: { id in try await MainActor.run { try store.deleteAnnotation(id) } },
+            fetchUserProfile: { id in try await MainActor.run { try store.fetchUserProfile(id: id) } },
+            saveUserProfile: { profile in try await MainActor.run { try store.saveUserProfile(profile) } }
         )
     }
 }

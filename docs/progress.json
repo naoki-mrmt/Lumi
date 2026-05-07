@@ -273,6 +273,11 @@
       "date": "2026-05-07",
       "summary": "Live Dependencies 配線 + AppFeature の Auth ガード + 本番セットアップ手順書を追加。AppConfig を tolerant 化 (Bundle.main 未設定時は nil を返し fatalError しない)、SupabaseClientProvider.shared を追加 (Config 未設定なら Mock にフォールバック)。AppleSignInClientKey / SupabaseAuthClientKey / EmailAuthClientKey の liveValue を Live 実装に切替。新規 DependencyKey: syncEngine (BufferedSyncEngine + LiveSyncEngine + LiveNetworkMonitor)、videoPlaybackService (LiveVideoPlaybackService、@MainActor を解除)。MatchInputFeature に syncEngine.push を配線 (evaluationSelected/rallyEndTapped/timeoutRequested/substitutionRequested)。LumiApp.swift に Telemetry.start を追加。AppFeature: session: AuthSession?, isAuthRequired: Bool を追加、onAppear で currentSession 読み込み、emailAuth(.sessionReceived) を捕捉して session に伝播、signOutTapped/signedOut アクション、shouldShowAuthGate 派生プロパティ、AuthGateModifier (iOS fullScreenCover / macOS sheet)、サインアウト UI セクション。AppFeature の body 順序を Children → Reduce に変更 (ifLet 警告回避)。docs/SETUP_PRODUCTION.md 新規作成 (Supabase + Apple Sign in + Sentry + Config.swift + xcconfig + GitHub Secrets + TestFlight + チェックリスト)。テスト 133/133 緑 (56 スイート、AppFeature Auth ガードテスト 4 件追加)。iPad iOS 26 ビルド SUCCEEDED",
       "next_action": "実 Supabase / Apple Developer / Sentry 環境への接続 (docs/SETUP_PRODUCTION.md 通り)。任意: Snapshot Tests (タスク3)、Phase 2 Feature の永続化 (タスク5、別 PR)"
+    },
+    {
+      "date": "2026-05-07",
+      "summary": "Snapshot Tests 基盤 + Phase 2 Feature の永続化を追加。SnapshotTests テストターゲット新設 (5 ビューファイル: AppView/MatchInputView/MatchViewerView/ReviewView/ReportView × Light/Dark)、すべて #if os(iOS) ガード + .disabled で初期 disabled、xcodebuild test で recording モード手順を Tests/SnapshotTests/README.md に明記。LocalStore に OpponentTeam/PlayAnnotation/UserProfile 用の fetch/save/delete/fetchUserProfile クロージャを追加 (signature 互換のためデフォルト引数で既存呼び出し維持)。InMemoryLocalStoreActor 拡張で 3 エンティティを保持。SwiftDataModels に OpponentTeamRecord/PlayAnnotationRecord/UserProfileRecord @Model 追加 (UUID 配列はカンマ区切り文字列でエンコード)。SwiftDataStore に対応 fetch/save/delete メソッドを追加し、Schema に登録。LocalStore.swiftData ファクトリも完全配線。Reducer 配線: OpponentDatabaseFeature が派生 + 永続をマージ、notesChanged / maskedNameChanged / persistEdits を追加。VideoReviewFeature に onAppear + addAnnotation の永続化。TeamSwitcherFeature に profileLoaded、selectPrimary/teamCreated 後の saveUserProfile を追加。Phase2PersistenceTests 6 件追加。テスト 139/139 緑 (57 スイート)。iPad iOS 26 ビルド SUCCEEDED。**全 6 タスク完了**",
+      "next_action": "実 Supabase / Apple Developer / Sentry 環境への接続 → TestFlight 配信。Snapshot 初回記録 (xcodebuild test, recording モード)"
     }
   ],
   "metrics": {
@@ -289,6 +294,6 @@
       "ui_layer": "snapshot_only_planned"
     }
   },
-  "last_updated": "2026-05-07T13:00:00+09:00",
+  "last_updated": "2026-05-07T14:00:00+09:00",
   "last_updated_by": "claude-code"
 }

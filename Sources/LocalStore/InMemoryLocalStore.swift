@@ -7,6 +7,9 @@ public actor InMemoryLocalStoreActor {
     private var teams: [UUID: Team] = [:]
     private var players: [UUID: Player] = [:]
     private var matches: [UUID: Match] = [:]
+    private var opponentTeams: [UUID: OpponentTeam] = [:]
+    private var annotations: [UUID: PlayAnnotation] = [:]
+    private var userProfiles: [UUID: UserProfile] = [:]
 
     public init() {}
 
@@ -59,6 +62,49 @@ public actor InMemoryLocalStoreActor {
             .sorted { $0.startTime > $1.startTime }
             .first
     }
+
+    // MARK: - Phase 2
+
+    public func fetchOpponentTeams() -> [OpponentTeam] {
+        opponentTeams.values.sorted { $0.createdAt < $1.createdAt }
+    }
+
+    public func saveOpponentTeam(_ opp: OpponentTeam) {
+        opponentTeams[opp.id] = opp
+    }
+
+    public func deleteOpponentTeam(_ id: UUID) {
+        opponentTeams.removeValue(forKey: id)
+    }
+
+    public func fetchAnnotations(matchId: UUID) -> [PlayAnnotation] {
+        // 簡易: rallyId / playId が match の sets/rallies/plays に属するもののみ抽出。
+        // InMemory ではすべての annotation を返す代わりに、rallyId が match に属するかを
+        // matches から逆引きする。
+        guard let match = matches[matchId] else {
+            return annotations.values.sorted { $0.createdAt < $1.createdAt }
+        }
+        let rallyIds = Set(match.sets.flatMap { $0.rallies.map(\.id) })
+        return annotations.values
+            .filter { rallyIds.contains($0.rallyId) }
+            .sorted { $0.createdAt < $1.createdAt }
+    }
+
+    public func saveAnnotation(_ ann: PlayAnnotation) {
+        annotations[ann.id] = ann
+    }
+
+    public func deleteAnnotation(_ id: UUID) {
+        annotations.removeValue(forKey: id)
+    }
+
+    public func fetchUserProfile(id: UUID) -> UserProfile? {
+        userProfiles[id]
+    }
+
+    public func saveUserProfile(_ profile: UserProfile) {
+        userProfiles[profile.id] = profile
+    }
 }
 
 extension LocalStore {
@@ -74,7 +120,15 @@ extension LocalStore {
             fetchMatches: { await store.fetchMatches(teamId: $0) },
             saveMatch: { await store.saveMatch($0) },
             fetchLastMatch: { await store.fetchLastMatch(teamId: $0) },
-            findInProgressMatch: { await store.findInProgressMatch() }
+            findInProgressMatch: { await store.findInProgressMatch() },
+            fetchOpponentTeams: { await store.fetchOpponentTeams() },
+            saveOpponentTeam: { await store.saveOpponentTeam($0) },
+            deleteOpponentTeam: { await store.deleteOpponentTeam($0) },
+            fetchAnnotations: { await store.fetchAnnotations(matchId: $0) },
+            saveAnnotation: { await store.saveAnnotation($0) },
+            deleteAnnotation: { await store.deleteAnnotation($0) },
+            fetchUserProfile: { await store.fetchUserProfile(id: $0) },
+            saveUserProfile: { await store.saveUserProfile($0) }
         )
     }
 

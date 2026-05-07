@@ -137,6 +137,191 @@ public final class MatchRecord {
     }
 }
 
+// MARK: - Phase 2 永続化エンティティ
+
+@Model
+public final class OpponentTeamRecord {
+    @Attribute(.unique) public var id: UUID
+    public var name: String
+    public var maskedName: String?
+    public var encounteredMatchIdsRaw: String   // UUID をカンマ区切りで保存 (SwiftData は [UUID] 直接保存に弱い)
+    public var notes: String
+    public var createdAt: Date
+    public var updatedAt: Date
+
+    public init(
+        id: UUID,
+        name: String,
+        maskedName: String?,
+        encounteredMatchIdsRaw: String,
+        notes: String,
+        createdAt: Date,
+        updatedAt: Date
+    ) {
+        self.id = id
+        self.name = name
+        self.maskedName = maskedName
+        self.encounteredMatchIdsRaw = encounteredMatchIdsRaw
+        self.notes = notes
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+    }
+
+    public convenience init(from opp: OpponentTeam) {
+        self.init(
+            id: opp.id,
+            name: opp.name,
+            maskedName: opp.maskedName,
+            encounteredMatchIdsRaw: opp.encounteredMatchIds.map(\.uuidString).joined(separator: ","),
+            notes: opp.notes,
+            createdAt: opp.createdAt,
+            updatedAt: opp.updatedAt
+        )
+    }
+
+    public func toValue() -> OpponentTeam {
+        let ids: [UUID] = encounteredMatchIdsRaw
+            .split(separator: ",")
+            .compactMap { UUID(uuidString: String($0)) }
+        return OpponentTeam(
+            id: id,
+            name: name,
+            maskedName: maskedName,
+            encounteredMatchIds: ids,
+            notes: notes,
+            createdAt: createdAt,
+            updatedAt: updatedAt
+        )
+    }
+
+    public func update(from opp: OpponentTeam) {
+        self.name = opp.name
+        self.maskedName = opp.maskedName
+        self.encounteredMatchIdsRaw = opp.encounteredMatchIds.map(\.uuidString).joined(separator: ",")
+        self.notes = opp.notes
+        self.updatedAt = opp.updatedAt
+    }
+}
+
+@Model
+public final class PlayAnnotationRecord {
+    @Attribute(.unique) public var id: UUID
+    public var rallyId: UUID
+    public var playId: UUID?
+    public var authorId: UUID
+    public var text: String
+    public var createdAt: Date
+    public var updatedAt: Date
+
+    public init(
+        id: UUID,
+        rallyId: UUID,
+        playId: UUID?,
+        authorId: UUID,
+        text: String,
+        createdAt: Date,
+        updatedAt: Date
+    ) {
+        self.id = id
+        self.rallyId = rallyId
+        self.playId = playId
+        self.authorId = authorId
+        self.text = text
+        self.createdAt = createdAt
+        self.updatedAt = updatedAt
+    }
+
+    public convenience init(from ann: PlayAnnotation) {
+        self.init(
+            id: ann.id,
+            rallyId: ann.rallyId,
+            playId: ann.playId,
+            authorId: ann.authorId,
+            text: ann.text,
+            createdAt: ann.createdAt,
+            updatedAt: ann.updatedAt
+        )
+    }
+
+    public func toValue() -> PlayAnnotation {
+        PlayAnnotation(
+            id: id,
+            rallyId: rallyId,
+            playId: playId,
+            authorId: authorId,
+            text: text,
+            createdAt: createdAt,
+            updatedAt: updatedAt
+        )
+    }
+
+    public func update(from ann: PlayAnnotation) {
+        self.rallyId = ann.rallyId
+        self.playId = ann.playId
+        self.authorId = ann.authorId
+        self.text = ann.text
+        self.updatedAt = ann.updatedAt
+    }
+}
+
+@Model
+public final class UserProfileRecord {
+    @Attribute(.unique) public var id: UUID
+    public var email: String?
+    public var displayName: String
+    public var teamIdsRaw: String
+    public var primaryTeamId: UUID?
+    public var createdAt: Date
+
+    public init(
+        id: UUID,
+        email: String?,
+        displayName: String,
+        teamIdsRaw: String,
+        primaryTeamId: UUID?,
+        createdAt: Date
+    ) {
+        self.id = id
+        self.email = email
+        self.displayName = displayName
+        self.teamIdsRaw = teamIdsRaw
+        self.primaryTeamId = primaryTeamId
+        self.createdAt = createdAt
+    }
+
+    public convenience init(from profile: UserProfile) {
+        self.init(
+            id: profile.id,
+            email: profile.email,
+            displayName: profile.displayName,
+            teamIdsRaw: profile.teamIds.map(\.uuidString).joined(separator: ","),
+            primaryTeamId: profile.primaryTeamId,
+            createdAt: profile.createdAt
+        )
+    }
+
+    public func toValue() -> UserProfile {
+        let ids: [UUID] = teamIdsRaw
+            .split(separator: ",")
+            .compactMap { UUID(uuidString: String($0)) }
+        return UserProfile(
+            id: id,
+            email: email,
+            displayName: displayName,
+            teamIds: ids,
+            primaryTeamId: primaryTeamId,
+            createdAt: createdAt
+        )
+    }
+
+    public func update(from profile: UserProfile) {
+        self.email = profile.email
+        self.displayName = profile.displayName
+        self.teamIdsRaw = profile.teamIds.map(\.uuidString).joined(separator: ",")
+        self.primaryTeamId = profile.primaryTeamId
+    }
+}
+
 extension JSONEncoder {
     static let lumi: JSONEncoder = {
         let e = JSONEncoder()

@@ -24,6 +24,7 @@ public struct TeamSwitcherFeature: Sendable {
     public enum Action: Equatable {
         case onAppear
         case teamsLoaded([Team])
+        case profileLoaded(UserProfile?)
         case loadFailed(String)
         case selectPrimary(UUID)
         case draftNameChanged(String)
@@ -40,10 +41,15 @@ public struct TeamSwitcherFeature: Sendable {
         Reduce { state, action in
             switch action {
             case .onAppear:
+                let profileId = state.profile?.id
                 return .run { send in
                     do {
                         let teams = try await localStore.fetchTeams()
                         await send(.teamsLoaded(teams))
+                        if let pid = profileId {
+                            let profile = try? await localStore.fetchUserProfile(pid)
+                            await send(.profileLoaded(profile))
+                        }
                     } catch {
                         await send(.loadFailed(error.localizedDescription))
                     }
@@ -53,13 +59,24 @@ public struct TeamSwitcherFeature: Sendable {
                 state.teams = teams
                 return .none
 
+            case let .profileLoaded(profile):
+                if let p = profile {
+                    state.profile = p
+                }
+                return .none
+
             case let .loadFailed(msg):
                 state.errorMessage = msg
                 return .none
 
             case let .selectPrimary(id):
                 state.profile?.primaryTeamId = id
-                return .none
+                let profile = state.profile
+                return .run { _ in
+                    if let p = profile {
+                        try? await localStore.saveUserProfile(p)
+                    }
+                }
 
             case let .draftNameChanged(n):
                 state.draftTeamName = n
@@ -81,7 +98,12 @@ public struct TeamSwitcherFeature: Sendable {
                     state.profile?.primaryTeamId = team.id
                 }
                 state.profile?.teamIds.append(team.id)
-                return .none
+                let profile = state.profile
+                return .run { _ in
+                    if let p = profile {
+                        try? await localStore.saveUserProfile(p)
+                    }
+                }
 
             case .errorDismissed:
                 state.errorMessage = nil

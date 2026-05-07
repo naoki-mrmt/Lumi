@@ -19,6 +19,18 @@ public struct LocalStore: Sendable {
     public var fetchLastMatch: @Sendable (_ teamId: UUID) async throws -> Match?
     public var findInProgressMatch: @Sendable () async throws -> Match?
 
+    // Phase 2 永続化
+    public var fetchOpponentTeams: @Sendable () async throws -> [OpponentTeam]
+    public var saveOpponentTeam: @Sendable (OpponentTeam) async throws -> Void
+    public var deleteOpponentTeam: @Sendable (_ id: UUID) async throws -> Void
+
+    public var fetchAnnotations: @Sendable (_ matchId: UUID) async throws -> [PlayAnnotation]
+    public var saveAnnotation: @Sendable (PlayAnnotation) async throws -> Void
+    public var deleteAnnotation: @Sendable (_ id: UUID) async throws -> Void
+
+    public var fetchUserProfile: @Sendable (_ id: UUID) async throws -> UserProfile?
+    public var saveUserProfile: @Sendable (UserProfile) async throws -> Void
+
     public init(
         fetchTeams: @escaping @Sendable () async throws -> [Team],
         saveTeam: @escaping @Sendable (Team) async throws -> Void,
@@ -28,7 +40,15 @@ public struct LocalStore: Sendable {
         fetchMatches: @escaping @Sendable (UUID) async throws -> [Match],
         saveMatch: @escaping @Sendable (Match) async throws -> Void,
         fetchLastMatch: @escaping @Sendable (UUID) async throws -> Match?,
-        findInProgressMatch: @escaping @Sendable () async throws -> Match? = { nil }
+        findInProgressMatch: @escaping @Sendable () async throws -> Match? = { nil },
+        fetchOpponentTeams: @escaping @Sendable () async throws -> [OpponentTeam] = { [] },
+        saveOpponentTeam: @escaping @Sendable (OpponentTeam) async throws -> Void = { _ in },
+        deleteOpponentTeam: @escaping @Sendable (UUID) async throws -> Void = { _ in },
+        fetchAnnotations: @escaping @Sendable (UUID) async throws -> [PlayAnnotation] = { _ in [] },
+        saveAnnotation: @escaping @Sendable (PlayAnnotation) async throws -> Void = { _ in },
+        deleteAnnotation: @escaping @Sendable (UUID) async throws -> Void = { _ in },
+        fetchUserProfile: @escaping @Sendable (UUID) async throws -> UserProfile? = { _ in nil },
+        saveUserProfile: @escaping @Sendable (UserProfile) async throws -> Void = { _ in }
     ) {
         self.fetchTeams = fetchTeams
         self.saveTeam = saveTeam
@@ -39,6 +59,14 @@ public struct LocalStore: Sendable {
         self.saveMatch = saveMatch
         self.fetchLastMatch = fetchLastMatch
         self.findInProgressMatch = findInProgressMatch
+        self.fetchOpponentTeams = fetchOpponentTeams
+        self.saveOpponentTeam = saveOpponentTeam
+        self.deleteOpponentTeam = deleteOpponentTeam
+        self.fetchAnnotations = fetchAnnotations
+        self.saveAnnotation = saveAnnotation
+        self.deleteAnnotation = deleteAnnotation
+        self.fetchUserProfile = fetchUserProfile
+        self.saveUserProfile = saveUserProfile
     }
 }
 

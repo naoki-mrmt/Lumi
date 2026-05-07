@@ -3,6 +3,7 @@
 import ComposableArchitecture
 import DesignSystem
 import Foundation
+import LocalStore
 import Models
 import SwiftUI
 import VideoSync
@@ -31,6 +32,7 @@ public struct VideoReviewFeature: Sendable {
     }
 
     public enum Action: Equatable {
+        case onAppear
         case videoSelected(URL?)
         case markStartHere(seconds: TimeInterval)
         case playTapped(Play)
@@ -42,11 +44,20 @@ public struct VideoReviewFeature: Sendable {
         case annotationsLoaded([PlayAnnotation])
     }
 
+    @Dependency(\.localStore) var localStore
+
     public init() {}
 
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+            case .onAppear:
+                let matchId = state.match.id
+                return .run { send in
+                    let list = (try? await localStore.fetchAnnotations(matchId)) ?? []
+                    await send(.annotationsLoaded(list))
+                }
+
             case let .videoSelected(url):
                 state.videoURL = url
                 state.match.videoLocalPath = url?.path
@@ -84,7 +95,9 @@ public struct VideoReviewFeature: Sendable {
                 state.draftAnnotation = ""
                 state.draftRallyId = nil
                 state.draftPlayId = nil
-                return .none
+                return .run { _ in
+                    try? await localStore.saveAnnotation(ann)
+                }
 
             case let .annotationsLoaded(list):
                 state.annotations = list
@@ -115,6 +128,7 @@ public struct VideoReviewView: View {
         .padding(16)
         .background(Color.Lumi.background.ignoresSafeArea())
         .foregroundStyle(Color.Lumi.textPrimary)
+        .task { store.send(.onAppear) }
         .fileImporter(
             isPresented: $fileImporterPresented,
             allowedContentTypes: [.movie],

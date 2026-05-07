@@ -132,15 +132,17 @@ let package = Package(
         .target(
             name: "OpponentDatabaseFeature",
             dependencies: [
-                "Models", "DesignSystem", "StatsEngine",
+                "Models", "DesignSystem", "LocalStore", "StatsEngine",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+                .product(name: "Dependencies", package: "swift-dependencies"),
             ]
         ),
         .target(
             name: "VideoReviewFeature",
             dependencies: [
-                "Models", "DesignSystem", "VideoSync",
+                "Models", "DesignSystem", "LocalStore", "VideoSync",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+                .product(name: "Dependencies", package: "swift-dependencies"),
             ]
         ),
         .target(
@@ -326,7 +328,7 @@ let package = Package(
         .testTarget(
             name: "PhasesTests",
             dependencies: [
-                "Models", "StatsEngine", "VideoSync", "AuthFeature"
+                "Models", "StatsEngine", "VideoSync", "AuthFeature", "LocalStore"
             ]
         ),
         .testTarget(
@@ -381,6 +383,23 @@ let package = Package(
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 .product(name: "Dependencies", package: "swift-dependencies"),
             ]
+        ),
+        .testTarget(
+            name: "SnapshotTests",
+            dependencies: [
+                "AppFeature",
+                "MatchInputFeature",
+                "MatchViewerFeature",
+                "ReviewFeature",
+                "ReportFeature",
+                "Models",
+                "LocalStore",
+                "ServiceOrderEngine",
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+                .product(name: "Dependencies", package: "swift-dependencies"),
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+            ],
+            exclude: ["README.md"]
         ),
     ]
 )

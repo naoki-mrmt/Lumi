@@ -3,6 +3,7 @@
 import ComposableArchitecture
 import DesignSystem
 import Foundation
+import LocalStore
 import Models
 import StatsEngine
 import SwiftUI
@@ -36,7 +37,12 @@ public struct OpponentDatabaseFeature: Sendable {
         case opponentTapped(OpponentTeam)
         case tendencyLoaded(OpponentDatabase.Tendency)
         case dismissDetail
+        case notesChanged(String)
+        case maskedNameChanged(String)
+        case persistEdits
     }
+
+    @Dependency(\.localStore) var localStore
 
     public init() {}
 
@@ -46,8 +52,11 @@ public struct OpponentDatabaseFeature: Sendable {
             case .onAppear:
                 let matches = state.allMatches
                 return .run { send in
-                    let opps = OpponentDatabase().opponents(from: matches)
-                    await send(.opponentsLoaded(opps))
+                    // 派生 (matches から自動生成) と 永続 (LocalStore に保存済の編集) をマージ
+                    let derived = OpponentDatabase().opponents(from: matches)
+                    let stored = (try? await localStore.fetchOpponentTeams()) ?? []
+                    let merged = mergeOpponents(derived: derived, stored: stored)
+                    await send(.opponentsLoaded(merged))
                 }
 
             case let .opponentsLoaded(list):
@@ -79,9 +88,46 @@ public struct OpponentDatabaseFeature: Sendable {
                 state.selectedOpponent = nil
                 state.tendency = nil
                 return .none
+
+            case let .notesChanged(notes):
+                state.selectedOpponent?.notes = notes
+                state.selectedOpponent?.updatedAt = Date()
+                return .none
+
+            case let .maskedNameChanged(name):
+                state.selectedOpponent?.maskedName = name.isEmpty ? nil : name
+                state.selectedOpponent?.updatedAt = Date()
+                return .none
+
+            case .persistEdits:
+                guard let opp = state.selectedOpponent else { return .none }
+                // ローカルリストにも反映
+                if let idx = state.opponents.firstIndex(where: { $0.id == opp.id }) {
+                    state.opponents[idx] = opp
+                }
+                return .run { _ in
+                    try? await localStore.saveOpponentTeam(opp)
+                }
             }
         }
     }
+}
+
+/// 派生 (matches → 自動生成) と 永続 (LocalStore) をマージ。
+/// 名前が一致するエントリは永続側のメタデータ (notes / maskedName) を上書きで保持。
+private func mergeOpponents(derived: [OpponentTeam], stored: [OpponentTeam]) -> [OpponentTeam] {
+    var byName: [String: OpponentTeam] = [:]
+    for d in derived { byName[d.name] = d }
+    for s in stored {
+        if var existing = byName[s.name] {
+            existing.maskedName = s.maskedName
+            existing.notes = s.notes
+            byName[s.name] = existing
+        } else {
+            byName[s.name] = s
+        }
+    }
+    return byName.values.sorted { $0.name < $1.name }
 }
 
 // MARK: - View
