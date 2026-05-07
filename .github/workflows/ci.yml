@@ -1,0 +1,142 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  swift-test:
+    name: Swift test (macOS)
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - name: Show environment
+        run: |
+          xcodebuild -version
+          swift --version
+      - name: Resolve packages
+        run: swift package resolve
+      - name: Run all SPM tests
+        run: swift test --parallel
+
+  ios-build:
+    name: iOS Simulator build
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - name: Resolve packages
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project Lumi.xcodeproj \
+            -scheme Lumi
+      - name: Pick iPad simulator
+        id: pick-sim
+        run: |
+          # 利用可能な iPad Pro 13" を動的に拾う (M5/M4/M3 等、世代差を吸収)
+          NAME=$(xcrun simctl list devices available -j \
+            | python3 -c "import sys,json; d=json.load(sys.stdin); \
+                names=[v['name'] for k,vs in d['devices'].items() for v in vs if 'iPad Pro 13' in v['name']]; \
+                print(names[0] if names else 'iPad Pro 13-inch (M4)')")
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          echo "Picked: $NAME"
+      - name: Build for iPad Simulator
+        run: |
+          xcodebuild build \
+            -project Lumi.xcodeproj \
+            -scheme Lumi \
+            -destination "platform=iOS Simulator,name=${{ steps.pick-sim.outputs.name }}" \
+            -skipMacroValidation \
+            CODE_SIGNING_ALLOWED=NO
+
+  snapshot-tests:
+    name: Snapshot tests (iPad Sim)
+    runs-on: macos-15
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - name: Pick iPad simulator
+        id: pick-sim
+        run: |
+          NAME=$(xcrun simctl list devices available -j \
+            | python3 -c "import sys,json; d=json.load(sys.stdin); \
+                names=[v['name'] for k,vs in d['devices'].items() for v in vs if 'iPad Pro 13' in v['name']]; \
+                print(names[0] if names else 'iPad Pro 13-inch (M4)')")
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          echo "Picked: $NAME"
+      - name: Resolve packages
+        run: xcodebuild -resolvePackageDependencies -workspace . -scheme LumiKit-Package
+      - name: Run SnapshotTests
+        run: |
+          xcodebuild test \
+            -workspace . -scheme LumiKit-Package \
+            -destination "platform=iOS Simulator,name=${{ steps.pick-sim.outputs.name }}" \
+            -only-testing:SnapshotTests \
+            -skipMacroValidation
+      - name: Upload snapshot failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: snapshot-failures
+          path: |
+            Tests/SnapshotTests/__Snapshots__/**
+            ~/Library/Developer/Xcode/DerivedData/Lumi-*/Logs/Test/**
+
+  sql-lint:
+    name: SQL lint (sqlfluff)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install sqlfluff
+        run: pip install sqlfluff==3.0.7
+      - name: Lint migrations
+        run: sqlfluff lint supabase/migrations/ --dialect postgres --rules core || true
+
+  edge-functions-typecheck:
+    name: Edge Functions typecheck (Deno)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Type check
+        run: |
+          for fn in supabase/functions/*/index.ts; do
+            echo "Checking $fn"
+            deno check "$fn" || exit 1
+          done
+
+  secret-scan:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

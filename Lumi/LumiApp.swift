@@ -1,32 +1,46 @@
-//
-//  LumiApp.swift
-//  Lumi
-//
-//  Created by Naoki Muramoto on 2026/05/03.
-//
-
 import SwiftUI
 import SwiftData
+import ComposableArchitecture
+import Dependencies
+import AppFeature
+import LocalStore
+import SupabaseClient
+import Telemetry
 
 @main
 struct LumiApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+    init() {
+        // Sentry / OSLog 初期化 (DSN 未設定なら no-op)
+        Telemetry.start(
+            dsn: AppConfig.sentryDSN,
+            environment: AppConfig.environment,
+            tracesSampleRate: AppConfig.environment == "production" ? 0.1 : 1.0
+        )
+    }
 
+    @MainActor
+    private static let storeAndContainer: (StoreOf<AppFeature>, ModelContainer) = {
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            let container = try SwiftDataStore.makeContainer(inMemory: false)
+            let dataStore = SwiftDataStore(container: container)
+            let local = LocalStore.swiftData(dataStore)
+            let store = withDependencies {
+                $0.localStore = local
+            } operation: {
+                Store(initialState: AppFeature.State(isAuthRequired: AppConfig.isConfigured)) {
+                    AppFeature()
+                }
+            }
+            return (store, container)
         } catch {
-            fatalError("Could not create ModelContainer: \(error)")
+            fatalError("ModelContainer 初期化失敗: \(error)")
         }
     }()
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AppView(store: Self.storeAndContainer.0)
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(Self.storeAndContainer.1)
     }
 }

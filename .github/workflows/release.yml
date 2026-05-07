@@ -1,0 +1,64 @@
+name: Release (TestFlight)
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  testflight:
+    runs-on: macos-15
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      # 必要な secrets:
+      #   APPLE_CERTIFICATE_BASE64
+      #   APPLE_CERTIFICATE_PASSWORD
+      #   APPLE_PROVISIONING_PROFILE_BASE64
+      #   APPSTORE_CONNECT_API_KEY_ID
+      #   APPSTORE_CONNECT_API_KEY_ISSUER_ID
+      #   APPSTORE_CONNECT_API_KEY_BASE64
+      - name: Skip on PR
+        run: echo "TestFlight workflow placeholder. Configure secrets and uncomment the steps."
+
+      # - name: Import certificate
+      #   uses: apple-actions/import-codesign-certs@v3
+      #   with:
+      #     p12-file-base64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
+      #     p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+      #
+      # - name: Install provisioning profile
+      #   uses: apple-actions/download-provisioning-profiles@v3
+      #   with:
+      #     bundle-id: com.muramoto-co.lumi
+      #     issuer-id: ${{ secrets.APPSTORE_CONNECT_API_KEY_ISSUER_ID }}
+      #     api-key-id: ${{ secrets.APPSTORE_CONNECT_API_KEY_ID }}
+      #     api-private-key: ${{ secrets.APPSTORE_CONNECT_API_KEY_BASE64 }}
+      #
+      # - name: Archive
+      #   run: |
+      #     xcodebuild archive \
+      #       -project Lumi.xcodeproj \
+      #       -scheme Lumi \
+      #       -configuration Release \
+      #       -archivePath build/Lumi.xcarchive \
+      #       -destination 'generic/platform=iOS'
+      #
+      # - name: Export IPA
+      #   run: |
+      #     xcodebuild -exportArchive \
+      #       -archivePath build/Lumi.xcarchive \
+      #       -exportPath build/ \
+      #       -exportOptionsPlist scripts/ExportOptions.plist
+      #
+      # - name: Upload to TestFlight
+      #   uses: apple-actions/upload-testflight-build@v3
+      #   with:
+      #     app-path: build/Lumi.ipa
+      #     issuer-id: ${{ secrets.APPSTORE_CONNECT_API_KEY_ISSUER_ID }}
+      #     api-key-id: ${{ secrets.APPSTORE_CONNECT_API_KEY_ID }}
+      #     api-private-key: ${{ secrets.APPSTORE_CONNECT_API_KEY_BASE64 }}

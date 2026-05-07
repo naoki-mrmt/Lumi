@@ -48,10 +48,10 @@ Conventional Commits + スコープ:
 ## ビルド & テスト
 ```bash
 # Xcodeプロジェクトビルド
-xcodebuild -project Lumi.xcodeproj -scheme Lumi -destination 'platform=iOS Simulator,name=iPad Pro 13-inch (M4)' build
+xcodebuild -project Lumi.xcodeproj -scheme Lumi -destination 'platform=iOS Simulator,name=iPad Pro 13-inch (M5)' build
 
 # テスト実行
-xcodebuild -project Lumi.xcodeproj -scheme Lumi -destination 'platform=iOS Simulator,name=iPad Pro 13-inch (M4)' test
+xcodebuild -project Lumi.xcodeproj -scheme Lumi -destination 'platform=iOS Simulator,name=iPad Pro 13-inch (M5)' test
 
 # SPMモジュールテスト (Packages/LumiKit 構成後)
 # cd Packages/LumiKit && swift test

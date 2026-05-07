@@ -1,0 +1,21 @@
+// Config.xcconfig — 公開リポにコミットされる雛形 (空値のみ)
+//
+// 実際の secret 値は Config.local.xcconfig (.gitignore 済み) で上書きする。
+// `make bootstrap` で Config.local.xcconfig.template が Config.local.xcconfig にコピーされる。
+//
+// Xcode は Lumi ターゲットの baseConfigurationReference として本ファイルを参照し、
+// 各 INFOPLIST_KEY_* 経由で auto-generated Info.plist にキーが注入される。
+
+// ── デフォルトは空 (= AppConfig.isConfigured が false → Mock にフォールバック) ──
+SUPABASE_URL =
+SUPABASE_ANON_KEY =
+SENTRY_DSN =
+
+// ── ローカル override (任意) ──
+// Config.local.xcconfig が存在すれば値を上書き
+#include? "Config.local.xcconfig"
+
+// ── Info.plist へキー注入 ──
+INFOPLIST_KEY_SUPABASE_URL = $(SUPABASE_URL)
+INFOPLIST_KEY_SUPABASE_ANON_KEY = $(SUPABASE_ANON_KEY)
+INFOPLIST_KEY_SENTRY_DSN = $(SENTRY_DSN)

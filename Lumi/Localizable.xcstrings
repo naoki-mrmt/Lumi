@@ -1,0 +1,265 @@
+{
+  "sourceLanguage" : "ja",
+  "strings" : {
+    "app.name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "Lumi" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Lumi" } }
+      }
+    },
+    "app.subtitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "9人制バレーボール スカウティング" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "9-player Volleyball Scouting" } }
+      }
+    },
+    "auth.signin.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "Lumi にサインイン" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign in to Lumi" } }
+      }
+    },
+    "auth.signin.apple" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "Apple でサインイン" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign in with Apple" } }
+      }
+    },
+    "auth.signout" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "サインアウト" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign Out" } }
+      }
+    },
+    "auth.email.signin" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "サインイン" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign In" } }
+      }
+    },
+    "auth.email.signup" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "新規登録" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign Up" } }
+      }
+    },
+    "auth.email.placeholder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "メールアドレス" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Email" } }
+      }
+    },
+    "auth.password.placeholder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "パスワード (8文字以上 大文字+小文字+数字)" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Password (8+ chars, upper/lower/digit)" } }
+      }
+    },
+    "match.create" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "試合作成" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Create Match" } }
+      }
+    },
+    "match.opponent" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "対戦相手" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Opponent" } }
+      }
+    },
+    "match.starters" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "スタメン (9人)" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Starters (9)" } }
+      }
+    },
+    "match.formation" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "フォーメーション" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Formation" } }
+      }
+    },
+    "match.timeout" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "タイムアウト" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Timeout" } }
+      }
+    },
+    "match.substitution" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "選手交代" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Substitution" } }
+      }
+    },
+    "team.management" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "チーム管理" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Team Management" } }
+      }
+    },
+    "team.players.max" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "選手15人マスタ" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Roster (15)" } }
+      }
+    },
+    "team.switch" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "チーム切替" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Switch Team" } }
+      }
+    },
+    "review.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "振り返り" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Review" } }
+      }
+    },
+    "review.export.pdf" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "PDF エクスポート" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Export PDF" } }
+      }
+    },
+    "review.export.csv" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "CSV エクスポート" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Export CSV" } }
+      }
+    },
+    "report.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "レポート" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Report" } }
+      }
+    },
+    "opponent.db.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "対戦相手 DB" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Opponent DB" } }
+      }
+    },
+    "video.review.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "動画レビュー" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Video Review" } }
+      }
+    },
+    "video.stream.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ライブ映像配信" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Live Video Stream" } }
+      }
+    },
+    "score" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "スコア" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Score" } }
+      }
+    },
+    "evaluation.excellent" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "決定" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Kill" } }
+      }
+    },
+    "evaluation.good" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "良" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Good" } }
+      }
+    },
+    "evaluation.normal" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "普通" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Normal" } }
+      }
+    },
+    "evaluation.error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ミス" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Error" } }
+      }
+    },
+    "error.battery.low" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "バッテリー残量が少なくなっています。電源接続を推奨します" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Battery low. Please connect a power source." } }
+      }
+    },
+    "error.network.offline" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "オフラインです。データはローカルに保存され、復旧後に同期されます" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Offline. Data saved locally and will sync when reconnected." } }
+      }
+    },
+    "alert.recovery.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "中断中の試合を復元しますか？" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Restore the interrupted match?" } }
+      }
+    },
+    "common.close" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "閉じる" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Close" } }
+      }
+    },
+    "common.cancel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "キャンセル" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cancel" } }
+      }
+    },
+    "common.save" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "保存" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Save" } }
+      }
+    },
+    "common.delete" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "削除" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Delete" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

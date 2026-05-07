@@ -1,0 +1,15 @@
+// Config.local.xcconfig.template
+//
+// 利用方法:
+//   1. このファイルを `Config.local.xcconfig` にコピー (例: `make bootstrap`)
+//   2. 各値を Supabase / Sentry のダッシュボードから取得して埋める
+//   3. Config.local.xcconfig は .gitignore 済みなので絶対にコミットされない
+//
+// xcconfig では `:` の後の `//` がコメントとして解釈されるため、
+// URL は `https:/$()/...` のように $() で // を分断する必要あり。
+//
+// docs/SETUP_PRODUCTION.md §1 / §3 / §4 も併せて参照。
+
+SUPABASE_URL = https:/$()/YOUR_PROJECT.supabase.co
+SUPABASE_ANON_KEY = YOUR_ANON_KEY
+SENTRY_DSN = https:/$()/YOUR_DSN@sentry.io/YOUR_PROJECT_ID
