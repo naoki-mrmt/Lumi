@@ -112,6 +112,10 @@
 			);
 			name = Lumi;
 			packageProductDependencies = (
+				88F55BE12FA6DC65007F0DB2 /* AppFeature */,
+				88F55BE22FA6DC65007F0DB3 /* LocalStore */,
+				88F55BE32FA6DC65007F0DB3 /* SupabaseClient */,
+				88F55BE42FA6DC65007F0DB3 /* Telemetry */,
 			);
 			productName = Lumi;
 			productReference = 88F55BAE2FA6DC64007F0DB2 /* Lumi.app */;
@@ -191,12 +195,16 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				ja,
 				Base,
 			);
 			mainGroup = 88F55BA52FA6DC64007F0DB2;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 88F55BAF2FA6DC64007F0DB2 /* Products */;
+			packageReferences = (
+				88F55BE02FA6DC65007F0DB2 /* XCLocalSwiftPackageReference "LumiKit" */,
+			);
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -617,6 +625,32 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		88F55BE02FA6DC65007F0DB2 /* XCLocalSwiftPackageReference "LumiKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = .;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		88F55BE12FA6DC65007F0DB2 /* AppFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppFeature;
+		};
+		88F55BE22FA6DC65007F0DB3 /* LocalStore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LocalStore;
+		};
+		88F55BE32FA6DC65007F0DB3 /* SupabaseClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SupabaseClient;
+		};
+		88F55BE42FA6DC65007F0DB3 /* Telemetry */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Telemetry;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 88F55BA62FA6DC64007F0DB2 /* Project object */;
 }

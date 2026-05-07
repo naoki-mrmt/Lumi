@@ -1,0 +1,91 @@
+{
+  "sourceLanguage" : "ja",
+  "strings" : {
+    "app.name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : { "state" : "translated", "value" : "Lumi" }
+        },
+        "en" : {
+          "stringUnit" : { "state" : "translated", "value" : "Lumi" }
+        }
+      }
+    },
+    "app.subtitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : { "state" : "translated", "value" : "9人制バレーボール スカウティング" }
+        },
+        "en" : {
+          "stringUnit" : { "state" : "translated", "value" : "9-player Volleyball Scouting" }
+        }
+      }
+    },
+    "match.create" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "試合作成" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Create Match" } }
+      }
+    },
+    "match.opponent" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "対戦相手" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Opponent" } }
+      }
+    },
+    "team.management" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "チーム管理" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Team Management" } }
+      }
+    },
+    "review.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "振り返り" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Review" } }
+      }
+    },
+    "score" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "スコア" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Score" } }
+      }
+    },
+    "evaluation.excellent" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "決定" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Kill" } }
+      }
+    },
+    "evaluation.good" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "良" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Good" } }
+      }
+    },
+    "evaluation.normal" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "普通" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Normal" } }
+      }
+    },
+    "evaluation.error" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "ミス" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Error" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

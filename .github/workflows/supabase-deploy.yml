@@ -1,0 +1,40 @@
+name: Supabase deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "supabase/migrations/**"
+      - "supabase/functions/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Skip when secrets missing
+        if: env.PROJECT_REF == ''
+        run: echo "SUPABASE_PROJECT_REF not configured - skipping deploy"
+
+      - name: Link project
+        if: env.PROJECT_REF != ''
+        run: supabase link --project-ref "$PROJECT_REF"
+
+      - name: Deploy migrations
+        if: env.PROJECT_REF != ''
+        run: supabase db push
+
+      - name: Deploy Edge Functions
+        if: env.PROJECT_REF != ''
+        run: |
+          supabase functions deploy viewer-session
+          supabase functions deploy cleanup-expired-codes --no-verify-jwt

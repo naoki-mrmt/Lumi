@@ -55,7 +55,7 @@ Recorder/Viewer の リアルタイム同期、認証（Sign in with Apple）、
 
 ### マイグレーション管理
 
-`Supabase/migrations/` ディレクトリに連番付きSQLファイル：
+`supabase/migrations/` ディレクトリに連番付きSQLファイル：
 
 ```
 Supabase/

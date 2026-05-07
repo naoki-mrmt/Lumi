@@ -1,0 +1,11 @@
+// Config.swift.template
+// このファイルを Config.swift にコピーして値を設定してください
+// Config.swift は .gitignore に含まれておりコミットされません
+
+import Foundation
+
+enum Config {
+    static let supabaseURL = "https://YOUR_PROJECT.supabase.co"
+    static let supabaseAnonKey = "YOUR_ANON_KEY"
+    static let sentryDSN = "https://YOUR_DSN@sentry.io/YOUR_PROJECT_ID"
+}

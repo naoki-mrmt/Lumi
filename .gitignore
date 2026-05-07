@@ -9,18 +9,45 @@ DerivedData/
 *.xcuserdata
 *.xcworkspace/xcuserdata/
 xcuserdata/
+*.xcresult/
+TestResults.xcresult/
 
 # Swift Package Manager
 .build/
-Packages/
-Package.pins
+.swiftpm/
 Package.resolved
-*.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/
 
-# CocoaPods (if used)
-Pods/
+# Secrets (絶対にコミットしない)
+Lumi/Config.swift
+Config.swift
+.env
+.env.*
+!.env.example
+*.p12
+*.cer
+*.mobileprovision
+**/AuthKey_*.p8
+
+# Supabase ローカル
+supabase/.branches/
+supabase/.temp/
+supabase/.env
+.supabase/
 
 # Misc
 *.swp
 *.lock
-!Package.resolved
+*.log
+.idea/
+.vscode/
+
+# Python (sqlfluff cache等)
+__pycache__/
+.venv/
+
+# Node (Edge Functions ローカル開発で出る場合)
+node_modules/
+
+# Coverage / profiling
+*.profraw
+coverage/

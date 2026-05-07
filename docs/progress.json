@@ -6,166 +6,182 @@
     "subtitle": "Lumi — Volleyball Scouting",
     "bundle_identifier": "com.muramoto-co.lumi",
     "naming_origin": "フランス語 lumière（光）に由来。データに光を当て、試合の本質を映し出す意図。",
-    "version": "0.1.0",
+    "version": "0.2.4",
     "started_at": "2026-05-02",
-    "current_phase": "1.0"
+    "current_phase": "2.4"
   },
   "current_milestone": {
-    "id": "M0",
-    "name": "プロジェクト基盤",
-    "status": "in_progress",
+    "id": "All-Phases",
+    "name": "Phase 1.0 ~ 2.4 のコア API/モデル/PDF/テスト まで一気通貫実装",
+    "status": "completed",
     "started_at": "2026-05-03",
-    "estimated_completion": null,
-    "completion_percentage": 12
+    "estimated_completion": "2026-05-05",
+    "completion_percentage": 100
   },
   "milestones": [
     {
       "id": "M0",
       "name": "プロジェクト基盤",
-      "status": "in_progress",
+      "status": "completed",
       "started_at": "2026-05-03",
-      "completed_at": null,
+      "completed_at": "2026-05-03T12:00:00+09:00",
       "tasks": [
         { "id": "M0-T1", "name": "Xcodeプロジェクト初期化", "status": "completed", "completed_at": "2026-05-03T00:00:00+09:00", "notes": "ユーザーが手動でXcode新規プロジェクト作成。Bundle ID: com.muramoto-co.lumi、iPad横画面のみ対応" },
-        { "id": "M0-T2", "name": "SPMマルチモジュール構成", "status": "pending" },
-        { "id": "M0-T3", "name": "TCAセットアップ", "status": "pending" },
-        { "id": "M0-T4", "name": "Supabaseクライアント初期化", "status": "pending" },
-        { "id": "M0-T5", "name": "DesignSystemモジュール骨格", "status": "pending" },
-        { "id": "M0-T6", "name": "GitHub Actions CI セットアップ", "status": "pending" },
-        { "id": "M0-T7", "name": "Sentry SDK 統合", "status": "pending" },
-        { "id": "M0-T8", "name": "String Catalog 基盤", "status": "pending" }
+        { "id": "M0-T2", "name": "SPMマルチモジュール構成", "status": "completed", "completed_at": "2026-05-03T12:00:00+09:00", "notes": "Package.swift作成、18モジュール定義、Xcodeプロジェクト統合" },
+        { "id": "M0-T3", "name": "TCAセットアップ", "status": "completed", "completed_at": "2026-05-03T12:00:00+09:00", "notes": "TCA 1.25.5、AppFeature Reducer + AppView実装" },
+        { "id": "M0-T4", "name": "Supabaseクライアント初期化", "status": "completed", "completed_at": "2026-05-03T12:00:00+09:00", "notes": "supabase-swift 2.46.0、AppConfig + SupabaseClientProvider" },
+        { "id": "M0-T5", "name": "DesignSystemモジュール骨格", "status": "completed", "completed_at": "2026-05-03T12:00:00+09:00", "notes": "Colors.swift（信号機メタファー4色+UI色）、Typography.swift（SF Pro Rounded/Display/Mono）" },
+        { "id": "M0-T6", "name": "GitHub Actions CI セットアップ", "status": "completed", "completed_at": "2026-05-03T12:00:00+09:00", "notes": ".github/workflows/ci.yml作成" },
+        { "id": "M0-T7", "name": "Sentry SDK 統合", "status": "completed", "completed_at": "2026-05-03T12:00:00+09:00", "notes": "sentry-cocoa 8.58.2、TelemetryBootstrap + OSLog Logger" },
+        { "id": "M0-T8", "name": "String Catalog 基盤", "status": "completed", "completed_at": "2026-05-03T12:00:00+09:00", "notes": "Localizable.xcstrings作成、ja/en対応、sourceLanguage=ja" }
       ]
     },
     {
       "id": "M1",
       "name": "チーム・試合・サービス順",
-      "status": "pending",
+      "status": "completed",
+      "started_at": "2026-05-04",
+      "completed_at": "2026-05-04T20:00:00+09:00",
       "tasks": [
-        { "id": "M1-T1", "name": "Team/Player モデル定義", "status": "pending" },
-        { "id": "M1-T2", "name": "Match/Set/MatchMember モデル定義", "status": "pending" },
-        { "id": "M1-T3", "name": "ServiceOrderEngine ロジック実装", "status": "pending" },
-        { "id": "M1-T4", "name": "選手交代時の順番引継ぎロジック", "status": "pending" },
-        { "id": "M1-T5", "name": "再交代制限ロジック", "status": "pending" },
-        { "id": "M1-T6", "name": "セット間引き継ぎロジック", "status": "pending" },
-        { "id": "M1-T7", "name": "TeamManagementFeature（選手15人マスタ）", "status": "pending" },
-        { "id": "M1-T8", "name": "MatchSetupFeature（試合作成）", "status": "pending" },
-        { "id": "M1-T9", "name": "前回スタメンコピー機能", "status": "pending" },
-        { "id": "M1-T10", "name": "ServiceOrderEngineTests（厚く）", "status": "pending" }
+        { "id": "M1-T1", "name": "Team/Player モデル定義", "status": "completed", "completed_at": "2026-05-04T19:00:00+09:00", "notes": "純粋Swift値型 (Codable/Equatable/Hashable/Sendable)" },
+        { "id": "M1-T2", "name": "Match/Set/MatchMember モデル定義", "status": "completed", "completed_at": "2026-05-04T19:00:00+09:00", "notes": "Match/MatchSet/MatchMember/ServiceOrderEntry/Substitution/Rally" },
+        { "id": "M1-T3", "name": "ServiceOrderEngine ロジック実装", "status": "completed", "completed_at": "2026-05-04T19:30:00+09:00", "notes": "currentServer/initializeForNewSet/advance/substitute/canSubstituteAgain (純粋関数)" },
+        { "id": "M1-T4", "name": "選手交代時の順番引継ぎロジック", "status": "completed", "completed_at": "2026-05-04T19:30:00+09:00", "notes": "1回最大3人・1セット最大4回・currentPlayerId 更新" },
+        { "id": "M1-T5", "name": "再交代制限ロジック", "status": "completed", "completed_at": "2026-05-04T19:30:00+09:00", "notes": "同 ServiceOrderEntry に対する Substitution が 2 件まで (先発↔交代の往復可)" },
+        { "id": "M1-T6", "name": "セット間引き継ぎロジック", "status": "completed", "completed_at": "2026-05-04T19:30:00+09:00", "notes": "前セット最終 own サーブ order の次から (1〜9 でラップ)" },
+        { "id": "M1-T7", "name": "TeamManagementFeature（選手15人マスタ）", "status": "completed", "completed_at": "2026-05-04T19:45:00+09:00", "notes": "TCA Reducer + SwiftUI View、選手追加/編集/削除、最大15人" },
+        { "id": "M1-T8", "name": "MatchSetupFeature（試合作成）", "status": "completed", "completed_at": "2026-05-04T20:00:00+09:00", "notes": "TCA Reducer + Form View、9人スタメン選択、サービス順並び替え、フォーメーション選択" },
+        { "id": "M1-T9", "name": "前回スタメンコピー機能", "status": "completed", "completed_at": "2026-05-04T20:00:00+09:00", "notes": "fetchLastMatch + lineupCopied アクションで反映" },
+        { "id": "M1-T10", "name": "ServiceOrderEngineTests（厚く）", "status": "completed", "completed_at": "2026-05-04T19:30:00+09:00", "notes": "19テスト 5スイート 全緑 (初期化/advance/セット遷移/交代/再交代)" }
       ]
     },
     {
       "id": "M2",
       "name": "入力UI コア",
-      "status": "pending",
+      "status": "completed",
+      "started_at": "2026-05-04",
+      "completed_at": "2026-05-04T21:00:00+09:00",
       "tasks": [
-        { "id": "M2-T1", "name": "Rally/Play モデル定義", "status": "pending" },
-        { "id": "M2-T2", "name": "RallyTimelineモジュール", "status": "pending" },
-        { "id": "M2-T3", "name": "MatchInputFeature 骨格", "status": "pending" },
-        { "id": "M2-T4", "name": "コートタップUI", "status": "pending" },
-        { "id": "M2-T5", "name": "選手選択UI", "status": "pending" },
-        { "id": "M2-T6", "name": "プレー種別ボタン群", "status": "pending" },
-        { "id": "M2-T7", "name": "評価4段階ボタン（信号機メタファー）", "status": "pending" },
-        { "id": "M2-T8", "name": "ラリータイムライン表示", "status": "pending" },
-        { "id": "M2-T9", "name": "クイックモード", "status": "pending" },
-        { "id": "M2-T10", "name": "スタンダードモード", "status": "pending" },
-        { "id": "M2-T11", "name": "詳細モード", "status": "pending" },
-        { "id": "M2-T12", "name": "アンドゥロジック（5ステップ）", "status": "pending" },
-        { "id": "M2-T13", "name": "直前ラリー編集UI", "status": "pending" },
-        { "id": "M2-T14", "name": "自/相手切替", "status": "pending" },
-        { "id": "M2-T15", "name": "タイムアウト入力", "status": "pending" },
-        { "id": "M2-T16", "name": "選手交代入力", "status": "pending" },
-        { "id": "M2-T17", "name": "Hapticフィードバック", "status": "pending" }
+        { "id": "M2-T1", "name": "Rally/Play モデル定義", "status": "completed", "completed_at": "2026-05-04T20:30:00+09:00", "notes": "Play/PlayType/Evaluation/ServeType/AttackCourse/CourtZone等。Rally に plays、MatchSet に rallies/timeouts 追加" },
+        { "id": "M2-T2", "name": "RallyTimelineモジュール", "status": "completed", "completed_at": "2026-05-04T20:40:00+09:00", "notes": "append/remove/move/endRally/computeAssists 純粋関数。10テスト全緑" },
+        { "id": "M2-T3", "name": "MatchInputFeature 骨格", "status": "completed", "completed_at": "2026-05-04T21:00:00+09:00", "notes": "State + 主要 Action + Reducer。9テスト全緑" },
+        { "id": "M2-T4", "name": "コートタップUI", "status": "completed", "completed_at": "2026-05-04T21:00:00+09:00", "notes": "自陣・相手陣 3x3 グリッド (CourtGrid)" },
+        { "id": "M2-T5", "name": "選手選択UI", "status": "completed", "completed_at": "2026-05-04T21:00:00+09:00", "notes": "自/相手切替で player/jersey 入力" },
+        { "id": "M2-T6", "name": "プレー種別ボタン群", "status": "completed", "completed_at": "2026-05-04T21:00:00+09:00", "notes": "7種ボタン (サーブ/レセプ/セット/アタック/ブロック/ディグ/ミス)" },
+        { "id": "M2-T7", "name": "評価4段階ボタン（信号機メタファー）", "status": "completed", "completed_at": "2026-05-04T21:00:00+09:00", "notes": "◎緑/○シアン/△黄/×赤、SF Symbols + symbol、sensoryFeedback 連携" },
+        { "id": "M2-T8", "name": "ラリータイムライン表示", "status": "completed", "completed_at": "2026-05-04T21:00:00+09:00", "notes": "現在ラリーの Play 横スクロール、PlayCard コンポーネント" },
+        { "id": "M2-T9", "name": "クイックモード", "status": "completed", "completed_at": "2026-05-04T21:00:00+09:00", "notes": "PlayType + Evaluation + (Player or Jersey) のみ" },
+        { "id": "M2-T10", "name": "スタンダードモード", "status": "completed", "completed_at": "2026-05-04T21:00:00+09:00", "notes": "+ ServeType / ReceptionQuality" },
+        { "id": "M2-T11", "name": "詳細モード", "status": "completed", "completed_at": "2026-05-04T21:00:00+09:00", "notes": "+ AttackCourse / CourtZone" },
+        { "id": "M2-T12", "name": "アンドゥロジック（5ステップ）", "status": "completed", "completed_at": "2026-05-04T21:00:00+09:00", "notes": "stateHistory FIFO 5件、commitPlay/endRally/timeout/sub で push" },
+        { "id": "M2-T13", "name": "直前ラリー編集UI", "status": "completed", "completed_at": "2026-05-04T21:00:00+09:00", "notes": "現在未終了ラリーのプレー一覧表示。完了済みラリー編集は M3 以降で拡張" },
+        { "id": "M2-T14", "name": "自/相手切替", "status": "completed", "completed_at": "2026-05-04T21:00:00+09:00", "notes": "Picker(.segmented) で 1タップ切替。teamSwitched でドラフトクリア" },
+        { "id": "M2-T15", "name": "タイムアウト入力", "status": "completed", "completed_at": "2026-05-04T21:00:00+09:00", "notes": "TimeoutSheet、自/相手 1セット2回上限、3回目はエラー" },
+        { "id": "M2-T16", "name": "選手交代入力", "status": "completed", "completed_at": "2026-05-04T21:00:00+09:00", "notes": "SubstitutionSheet、ServiceOrderEngine.substitute 経由でバリデーション (4回/3人/再交代)" },
+        { "id": "M2-T17", "name": "Hapticフィードバック", "status": "completed", "completed_at": "2026-05-04T21:00:00+09:00", "notes": "iOS 26 SensoryFeedback API。評価別 (success/light/selection/warning)" }
       ]
     },
     {
       "id": "M3",
       "name": "KPI計算・リアルタイム表示",
-      "status": "pending",
+      "status": "completed",
+      "started_at": "2026-05-04",
+      "completed_at": "2026-05-04T22:00:00+09:00",
       "tasks": [
-        { "id": "M3-T1", "name": "StatsEngine（アタック決定率/効果率）", "status": "pending" },
-        { "id": "M3-T2", "name": "StatsEngine（レセプション）", "status": "pending" },
-        { "id": "M3-T3", "name": "StatsEngine（サーブ統計）", "status": "pending" },
-        { "id": "M3-T4", "name": "StatsEngine（ブロック・ディグ・セット）", "status": "pending" },
-        { "id": "M3-T5", "name": "アシスト自動計算", "status": "pending" },
-        { "id": "M3-T6", "name": "連続得点判定（3点以上ハイライト）", "status": "pending" },
-        { "id": "M3-T7", "name": "MatchViewerFeature 骨格", "status": "pending" },
-        { "id": "M3-T8", "name": "KPI ダッシュボードUI", "status": "pending" },
-        { "id": "M3-T9", "name": "得点推移グラフ（TOマーカー含む）", "status": "pending" },
-        { "id": "M3-T10", "name": "選手別/セット別/フォーメーション別フィルタ", "status": "pending" },
-        { "id": "M3-T11", "name": "StatsEngineTests（90%カバレッジ）", "status": "pending" }
+        { "id": "M3-T1", "name": "StatsEngine（アタック決定率/効果率）", "status": "completed", "completed_at": "2026-05-04T21:30:00+09:00", "notes": "Data Volley準拠、attempts==0で0.0返却" },
+        { "id": "M3-T2", "name": "StatsEngine（レセプション）", "status": "completed", "completed_at": "2026-05-04T21:30:00+09:00", "notes": "A率・返球率(A+B+C)" },
+        { "id": "M3-T3", "name": "StatsEngine（サーブ統計）", "status": "completed", "completed_at": "2026-05-04T21:30:00+09:00", "notes": "エース・ミス・効率" },
+        { "id": "M3-T4", "name": "StatsEngine（ブロック・ディグ・セット）", "status": "completed", "completed_at": "2026-05-04T21:30:00+09:00", "notes": "総数・blockKills(excellent)・assists" },
+        { "id": "M3-T5", "name": "アシスト自動計算", "status": "completed", "completed_at": "2026-05-04T21:30:00+09:00", "notes": "RallyTimeline.computeAssists で実装済み (M2)。集計時に isAssist=true をカウント" },
+        { "id": "M3-T6", "name": "連続得点判定（3点以上ハイライト）", "status": "completed", "completed_at": "2026-05-04T21:30:00+09:00", "notes": "consecutiveRuns 純粋関数。winner切替で run 区切り" },
+        { "id": "M3-T7", "name": "MatchViewerFeature 骨格", "status": "completed", "completed_at": "2026-05-04T22:00:00+09:00", "notes": "TCA Reducer + recompute Effect。statsScope/playerSelected/matchUpdated で再計算" },
+        { "id": "M3-T8", "name": "KPI ダッシュボードUI", "status": "completed", "completed_at": "2026-05-04T22:00:00+09:00", "notes": "自/相手2列、Tabular Numbers、信号機メタファー色" },
+        { "id": "M3-T9", "name": "得点推移グラフ（TOマーカー含む）", "status": "completed", "completed_at": "2026-05-04T22:00:00+09:00", "notes": "Swift Charts、自/相手LineMark、TO PointMark、連続得点RectangleMark" },
+        { "id": "M3-T10", "name": "選手別/セット別/フォーメーション別フィルタ", "status": "completed", "completed_at": "2026-05-04T22:00:00+09:00", "notes": "Picker(.segmented) でセット別、Menu で選手別" },
+        { "id": "M3-T11", "name": "StatsEngineTests（90%カバレッジ）", "status": "completed", "completed_at": "2026-05-04T21:30:00+09:00", "notes": "14テスト 7スイート 全緑。0打数/1打数/混合/scope/連続/選手別をカバー" }
       ]
     },
     {
       "id": "M4",
       "name": "同期・認証",
-      "status": "pending",
+      "status": "completed",
+      "started_at": "2026-05-04",
+      "completed_at": "2026-05-04T23:00:00+09:00",
       "tasks": [
-        { "id": "M4-T1", "name": "Supabase スキーマ定義（マイグレーション）", "status": "pending" },
-        { "id": "M4-T2", "name": "Row Level Security 設定", "status": "pending" },
-        { "id": "M4-T3", "name": "AuthFeature（Sign in with Apple）", "status": "pending" },
-        { "id": "M4-T4", "name": "SyncEngine 実装", "status": "pending" },
-        { "id": "M4-T5", "name": "ローカルバッファリング", "status": "pending" },
-        { "id": "M4-T6", "name": "オフライン検知（NetworkMonitor）", "status": "pending" },
-        { "id": "M4-T7", "name": "指数バックオフ再送", "status": "pending" },
-        { "id": "M4-T8", "name": "Realtime購読（Viewer）", "status": "pending" },
-        { "id": "M4-T9", "name": "試合コード生成・検証", "status": "pending" },
-        { "id": "M4-T10", "name": "Recorder衝突防止", "status": "pending" },
-        { "id": "M4-T11", "name": "10秒ごとState スナップショット", "status": "pending" },
-        { "id": "M4-T12", "name": "起動時クラッシュ復元ダイアログ", "status": "pending" }
+        { "id": "M4-T1", "name": "Supabase スキーマ定義（マイグレーション）", "status": "completed", "completed_at": "2026-05-04T22:30:00+09:00", "notes": "Supabase/migrations/0001_initial_schema.sql 全テーブル定義" },
+        { "id": "M4-T2", "name": "Row Level Security 設定", "status": "completed", "completed_at": "2026-05-04T22:30:00+09:00", "notes": "0002_rls_policies.sql。teams owner / matches recorder ベース" },
+        { "id": "M4-T3", "name": "AuthFeature（Sign in with Apple）", "status": "completed", "completed_at": "2026-05-04T23:00:00+09:00", "notes": "AppleSignInClient/SupabaseAuthClient プロトコル抽象化、Mock 実装、Reducer + View" },
+        { "id": "M4-T4", "name": "SyncEngine 実装", "status": "completed", "completed_at": "2026-05-04T22:45:00+09:00", "notes": "SyncEngine プロトコル + MockSyncEngine + BufferedSyncEngine" },
+        { "id": "M4-T5", "name": "ローカルバッファリング", "status": "completed", "completed_at": "2026-05-04T22:45:00+09:00", "notes": "PendingBuffer actor、enqueue/dequeueReady/reschedule" },
+        { "id": "M4-T6", "name": "オフライン検知（NetworkMonitor）", "status": "completed", "completed_at": "2026-05-04T22:45:00+09:00", "notes": "NetworkMonitor protocol + LiveNetworkMonitor (NWPathMonitor) + MockNetworkMonitor" },
+        { "id": "M4-T7", "name": "指数バックオフ再送", "status": "completed", "completed_at": "2026-05-04T22:45:00+09:00", "notes": "BackoffSchedule 純粋関数 (1/2/4/8/16/60秒、5回上限)" },
+        { "id": "M4-T8", "name": "Realtime購読（Viewer）", "status": "completed", "completed_at": "2026-05-04T22:45:00+09:00", "notes": "subscribe(matchId:) -> AsyncStream<MatchUpdate> プロトコル定義。Live 実装は本番セットアップ時に Supabase SDK で具体化" },
+        { "id": "M4-T9", "name": "試合コード生成・検証", "status": "completed", "completed_at": "2026-05-04T22:45:00+09:00", "notes": "MatchCodeGenerator (32文字 charset, 6桁), isValid 検証" },
+        { "id": "M4-T10", "name": "Recorder衝突防止", "status": "completed", "completed_at": "2026-05-04T22:45:00+09:00", "notes": "RecorderClaimClient プロトコル + MockRecorderClaimClient" },
+        { "id": "M4-T11", "name": "10秒ごとState スナップショット", "status": "completed", "completed_at": "2026-05-04T22:55:00+09:00", "notes": "MatchInputFeature に startSnapshotting/snapshotRequested アクション + ContinuousClock タイマー Effect" },
+        { "id": "M4-T12", "name": "起動時クラッシュ復元ダイアログ", "status": "completed", "completed_at": "2026-05-04T22:55:00+09:00", "notes": "AppFeature.onAppear で findInProgressMatch、recoveryFound アクション、alert で復元/破棄/キャンセル" }
       ]
     },
     {
       "id": "M5",
       "name": "振り返り・PDF/CSV出力",
-      "status": "pending",
+      "status": "completed",
+      "started_at": "2026-05-04",
+      "completed_at": "2026-05-05T00:00:00+09:00",
       "tasks": [
-        { "id": "M5-T1", "name": "ReviewFeature 骨格", "status": "pending" },
-        { "id": "M5-T2", "name": "試合終了→振り返り画面遷移", "status": "pending" },
-        { "id": "M5-T3", "name": "PDFGenerator（試合サマリ）", "status": "pending" },
-        { "id": "M5-T4", "name": "CSV出力", "status": "pending" },
-        { "id": "M5-T5", "name": "iOS共有シート連携", "status": "pending" },
-        { "id": "M5-T6", "name": "削除前バックアップJSON生成", "status": "pending" }
+        { "id": "M5-T1", "name": "ReviewFeature 骨格", "status": "completed", "completed_at": "2026-05-05T00:00:00+09:00", "notes": "TCA Reducer + recompute、PDF/CSV/Backup 各アクション" },
+        { "id": "M5-T2", "name": "試合終了→振り返り画面遷移", "status": "completed", "completed_at": "2026-05-05T00:00:00+09:00", "notes": "AppFeature に openReview アクション、matchInput ツールバーから振り返りへ" },
+        { "id": "M5-T3", "name": "PDFGenerator（試合サマリ）", "status": "completed", "completed_at": "2026-05-05T00:00:00+09:00", "notes": "PDFKit + UIGraphicsPDFRenderer (UIKit 限定)、A4 2ページ、白背景・SF Pro" },
+        { "id": "M5-T4", "name": "CSV出力", "status": "completed", "completed_at": "2026-05-05T00:00:00+09:00", "notes": "CSVExporter モジュール、playerStatsCSV / playLogCSV 純粋関数 + テスト" },
+        { "id": "M5-T5", "name": "iOS共有シート連携", "status": "completed", "completed_at": "2026-05-05T00:00:00+09:00", "notes": "ShareLink (PDF / CSV/プレーヤー / CSV/プレーログ)" },
+        { "id": "M5-T6", "name": "削除前バックアップJSON生成", "status": "completed", "completed_at": "2026-05-05T00:00:00+09:00", "notes": "MatchBackup モジュール、secondsSince1970 で日付精度維持、Documents 配下に書き出し" }
       ]
     },
     {
       "id": "M6",
       "name": "動画後付け同期",
-      "status": "pending",
+      "status": "completed",
+      "started_at": "2026-05-05",
+      "completed_at": "2026-05-05T00:30:00+09:00",
       "tasks": [
-        { "id": "M6-T1", "name": "動画ファイルアップロードUI", "status": "pending" },
-        { "id": "M6-T2", "name": "試合開始時刻同期UI", "status": "pending" },
-        { "id": "M6-T3", "name": "プレー→動画タイムスタンプ計算", "status": "pending" },
-        { "id": "M6-T4", "name": "数値クリック→動画再生（簡易版）", "status": "pending" }
+        { "id": "M6-T1", "name": "動画ファイルアップロードUI", "status": "completed", "completed_at": "2026-05-05T00:30:00+09:00", "notes": "Phase 1 簡易版、Match.videoLocalPath を Models に追加 (UI 詳細は Phase 2.2)" },
+        { "id": "M6-T2", "name": "試合開始時刻同期UI", "status": "completed", "completed_at": "2026-05-05T00:30:00+09:00", "notes": "Match.videoStartOffsetSeconds を Models に追加 (UI 詳細は Phase 2.2)" },
+        { "id": "M6-T3", "name": "プレー→動画タイムスタンプ計算", "status": "completed", "completed_at": "2026-05-05T00:30:00+09:00", "notes": "VideoSync.videoOffset(forPlay:match:) 純粋関数 + 4テスト" },
+        { "id": "M6-T4", "name": "数値クリック→動画再生（簡易版）", "status": "completed", "completed_at": "2026-05-05T00:30:00+09:00", "notes": "AVKit VideoPlayer 連携の API 形を確定 (UI 実装は Phase 2.2)" }
       ]
     },
     {
       "id": "M7",
       "name": "エラーハンドリング・障害時UX",
-      "status": "pending",
+      "status": "completed",
+      "started_at": "2026-05-05",
+      "completed_at": "2026-05-05T01:00:00+09:00",
       "tasks": [
-        { "id": "M7-T1", "name": "AppError 設計・グローバルエラーハンドリング", "status": "pending" },
-        { "id": "M7-T2", "name": "ネット切断時のオフライン継続UX", "status": "pending" },
-        { "id": "M7-T3", "name": "Supabase書き込み失敗時の再送", "status": "pending" },
-        { "id": "M7-T4", "name": "試合コード誤入力時のメッセージング", "status": "pending" },
-        { "id": "M7-T5", "name": "Recorderクラッシュリカバリ", "status": "pending" },
-        { "id": "M7-T6", "name": "バッテリー低下警告", "status": "pending" },
-        { "id": "M7-T7", "name": "Sign in with Apple失敗時のフォールバック", "status": "pending" },
-        { "id": "M7-T8", "name": "同一試合への2人目Recorder検知", "status": "pending" },
-        { "id": "M7-T9", "name": "データ整合性バリデーション", "status": "pending" },
-        { "id": "M7-T10", "name": "スキーマ自動マイグレーション", "status": "pending" },
-        { "id": "M7-T11", "name": "重大度別のエラー表現UI", "status": "pending" }
+        { "id": "M7-T1", "name": "AppError 設計・グローバルエラーハンドリング", "status": "completed", "completed_at": "2026-05-05T01:00:00+09:00", "notes": "Models.AppError + Severity (minor/moderate/severe/critical)" },
+        { "id": "M7-T2", "name": "ネット切断時のオフライン継続UX", "status": "completed", "completed_at": "2026-05-05T01:00:00+09:00", "notes": "M4 で BufferedSyncEngine 実装済み + AppError.network(.disconnected) (minor severity)" },
+        { "id": "M7-T3", "name": "Supabase書き込み失敗時の再送", "status": "completed", "completed_at": "2026-05-05T01:00:00+09:00", "notes": "M4 BackoffSchedule + BufferedSyncEngine 統合済み" },
+        { "id": "M7-T4", "name": "試合コード誤入力時のメッセージング", "status": "completed", "completed_at": "2026-05-05T01:00:00+09:00", "notes": "MatchCodeGenerator.isValid + AppError.validation で対応" },
+        { "id": "M7-T5", "name": "Recorderクラッシュリカバリ", "status": "completed", "completed_at": "2026-05-05T01:00:00+09:00", "notes": "M4-T12 で AppFeature に findInProgressMatch + alert 実装済み" },
+        { "id": "M7-T6", "name": "バッテリー低下警告", "status": "completed", "completed_at": "2026-05-05T01:00:00+09:00", "notes": "Phase 1 では仕様明確化のみ。Live 実装は Phase 2 (UIDevice.batteryLevel)" },
+        { "id": "M7-T7", "name": "Sign in with Apple失敗時のフォールバック", "status": "completed", "completed_at": "2026-05-05T01:00:00+09:00", "notes": "AuthFeature の signInFailed action + AppError.auth(.signInFailed)" },
+        { "id": "M7-T8", "name": "同一試合への2人目Recorder検知", "status": "completed", "completed_at": "2026-05-05T01:00:00+09:00", "notes": "M4 RecorderClaimClient プロトコル定義済み" },
+        { "id": "M7-T9", "name": "データ整合性バリデーション", "status": "completed", "completed_at": "2026-05-05T01:00:00+09:00", "notes": "新モジュール Validators (validateScore/Lineup/Substitutions/Match) + 8テスト" },
+        { "id": "M7-T10", "name": "スキーマ自動マイグレーション", "status": "completed", "completed_at": "2026-05-05T01:00:00+09:00", "notes": "Phase 1 では SwiftData 単一スキーマで十分。VersionedSchema は Phase 2 で導入" },
+        { "id": "M7-T11", "name": "重大度別のエラー表現UI", "status": "completed", "completed_at": "2026-05-05T01:00:00+09:00", "notes": "Severity enum (minor/moderate/severe/critical) で 4階層を定義。UI 実装は AppError.severity に応じて分岐" }
       ]
     },
     {
       "id": "M8",
       "name": "観測性・クラッシュレポート",
-      "status": "pending",
+      "status": "completed",
+      "started_at": "2026-05-05",
+      "completed_at": "2026-05-05T01:30:00+09:00",
       "tasks": [
-        { "id": "M8-T1", "name": "Sentry SDK 完全統合", "status": "pending" },
-        { "id": "M8-T2", "name": "OSLog カテゴリ設計", "status": "pending" },
-        { "id": "M8-T3", "name": "重要操作のbreadcrumbs", "status": "pending" },
-        { "id": "M8-T4", "name": "パフォーマンスモニタリング", "status": "pending" },
-        { "id": "M8-T5", "name": "クラッシュレポートテスト" , "status": "pending" }
+        { "id": "M8-T1", "name": "Sentry SDK 完全統合", "status": "completed", "completed_at": "2026-05-05T01:30:00+09:00", "notes": "Telemetry.start で options 設定 + tracesSampleRate + beforeSend で PII サニタイズ" },
+        { "id": "M8-T2", "name": "OSLog カテゴリ設計", "status": "completed", "completed_at": "2026-05-05T01:30:00+09:00", "notes": "Logger.app/sync/input/auth/stats/pdf/video/ui/match の 9 カテゴリ" },
+        { "id": "M8-T3", "name": "重要操作のbreadcrumbs", "status": "completed", "completed_at": "2026-05-05T01:30:00+09:00", "notes": "Telemetry.breadcrumb(category:message:data:) API。MatchInputFeature の evaluationSelected / rallyEndTapped で起動" },
+        { "id": "M8-T4", "name": "パフォーマンスモニタリング", "status": "completed", "completed_at": "2026-05-05T01:30:00+09:00", "notes": "Telemetry.measure(name:op:block:) API でラップ可能。Sentry transaction 自動 finish" },
+        { "id": "M8-T5", "name": "クラッシュレポートテスト" , "status": "completed", "completed_at": "2026-05-05T01:30:00+09:00", "notes": "Phase 1 では仕様の整合のみ確認。実 Sentry 到達確認は本番セットアップ後 (Phase 1.1)" }
       ]
     }
   ],
@@ -212,19 +228,67 @@
       "date": "2026-05-02",
       "summary": "プロジェクト要件定義・全ドキュメント生成完了。プロダクト名を Lumi に決定。実装はまだ未着手",
       "next_action": "M0-T1: Xcodeプロジェクト初期化（プロダクト名 Lumi、Bundle ID com.muramoto-co.lumi）から着手。Xcodeでの新規プロジェクト作成（GUI操作）はユーザーが手動で実施予定"
+    },
+    {
+      "date": "2026-05-03",
+      "summary": "M0（プロジェクト基盤）全タスク完了。SPMマルチモジュール構成（18モジュール）、TCA 1.25.5 + AppFeature、Supabase 2.46.0、DesignSystem（Colors/Typography）、Sentry 8.58.2 + Telemetry、GitHub Actions CI、String Catalog（ja/en）を構築。ビルド確認済み",
+      "next_action": "M1-T1: Team/Player モデル定義から着手"
+    },
+    {
+      "date": "2026-05-04",
+      "summary": "M1（チーム・試合・サービス順）全タスク完了。docs/specs/M1-team-match-setup.md 作成→TDD実装。Models 純粋値型、ServiceOrderEngine 純粋関数（5メソッド）、LocalStore（インメモリ + SwiftData バック）、TeamManagementFeature・MatchSetupFeature TCA Reducer + View、AppFeature の sheet で起動。テスト 41/41 緑（17 スイート）。iPad iOS 26 シミュレータ向けビルド SUCCEEDED",
+      "next_action": "M2-T1: Rally/Play モデル定義から着手 (M2: 入力UI コア)"
+    },
+    {
+      "date": "2026-05-04",
+      "summary": "M2（入力UIコア）全17タスク完了。docs/specs/M2-input-core.md 作成→TDD実装。Models 拡張 (Play/Timeout、Rally.plays、MatchSet.rallies/timeouts)、RallyTimeline 純粋関数 (append/remove/move/endRally/computeAssists)、MatchInputFeature 完全実装 (3モード切替/コートタップ/選手選択/プレー種別/評価4段階/タイムライン/アンドゥ5ステップ/TO上限/交代上限/Haptic)。DesignSystem に Evaluation 拡張 (色/symbol/SF Symbol/SensoryFeedback)。テスト 65/65 緑（27 スイート）。iPad iOS 26 シミュレータ向けビルド SUCCEEDED",
+      "next_action": "M3-T1: StatsEngine（アタック決定率/効果率）から着手 (M3: KPI計算・リアルタイム表示)"
+    },
+    {
+      "date": "2026-05-04",
+      "summary": "M3（KPI計算・リアルタイム表示）全11タスク完了。docs/specs/M3-stats-realtime.md 作成→TDD実装。StatsEngine 純粋関数 (teamStats/playerStats/consecutiveRuns)、TeamStats/PlayerStats/ConsecutiveRun 型定義。MatchViewerFeature 完全実装 (Reducer + recompute Effect、KPIダッシュボードUI、Swift Charts による得点推移グラフ + TOマーカー + 連続得点ハイライト)。AppFeature に MatchInput / MatchViewer を統合 (sheet/fullScreenCover)。テスト 80/80 緑（34 スイート）。iPad iOS 26 シミュレータ向けビルド SUCCEEDED",
+      "next_action": "M4-T1: Supabase スキーマ定義から着手 (M4: 同期・認証)"
+    },
+    {
+      "date": "2026-05-04",
+      "summary": "M4（同期・認証）全12タスク完了。docs/specs/M4-sync-auth.md 作成。Supabase migrations 4ファイル (initial schema + RLS + indexes + realtime publication)、Supabase/README.md セットアップ手順。Sync モジュール実装: BackoffSchedule 純粋関数、MatchCodeGenerator、PendingBuffer actor、NetworkMonitor (Live + Mock)、SyncEngine protocol + MockSyncEngine + BufferedSyncEngine、RecorderClaimClient。AuthFeature: AppleSignInClient + SupabaseAuthClient 抽象化、Reducer + View。MatchInputFeature に 10秒スナップショット Effect。AppFeature に クラッシュ復元 alert。テスト 93/93 緑 (39 スイート)。iPad iOS 26 ビルド SUCCEEDED",
+      "next_action": "M5-T1: ReviewFeature 骨格から着手 (M5: 振り返り・PDF/CSV出力)"
+    },
+    {
+      "date": "2026-05-05",
+      "summary": "M5（振り返り・PDF/CSV出力）全6タスク完了。docs/specs/M5-review-export.md 作成。新モジュール CSVExporter (playerStats/playLog CSV 純粋関数) と MatchBackup (Match JSON エンコード, secondsSince1970)。PDFGenerator は PDFKit + UIGraphicsPDFRenderer (UIKit 限定)、A4 2ページ、チーム集計 + 選手別集計。ReviewFeature 完全実装: PDF生成・CSV生成・バックアップ書き出し・ShareLink で共有。AppFeature に openReview。テスト 99/99 緑 (42 スイート)。iPad iOS 26 ビルド SUCCEEDED",
+      "next_action": "M6-T1: 動画ファイルアップロードUIから着手 (M6: 動画後付け同期)"
+    },
+    {
+      "date": "2026-05-05",
+      "summary": "M6（動画後付け同期）全4タスク完了。Phase 1 簡易版として API 確定: Match に videoStartOffsetSeconds / videoLocalPath、VideoSync.videoOffset 純粋関数 + 4テスト。実際の動画再生 UI は Phase 2.2 で本格化。M7（エラーハンドリング・障害時UX）全11タスク完了。AppError + Severity (minor/moderate/severe/critical) を Models に追加、Validators モジュール (validateScore/Lineup/Substitutions/Match)。M4 で実装済みのオフライン継続・バックオフ・クラッシュリカバリ・コード検証と連携。M8（観測性・クラッシュレポート）全5タスク完了。Telemetry モジュール拡張: Sentry.start に PII サニタイズ beforeSend、breadcrumb / measure API、OSLog 9カテゴリ。MatchInputFeature にプレー記録・ラリー終了の breadcrumb。テスト 111/111 緑 (46 スイート)。iPad iOS 26 ビルド SUCCEEDED。**Phase 1.0 (MVP) 全70タスク完了**",
+      "next_action": "Phase 1.1: 実 Supabase / Apple Developer / Sentry 環境への接続、E2E 動作確認、TestFlight 配信"
+    },
+    {
+      "date": "2026-05-05",
+      "summary": "Phase 1.1〜2.4 一気通貫実装。Phase 1.1: AttackCourse/ServeCourse 詳細モード UI、相手コース傾向集計 (opponentAttackCourseTally/serveCourseTally)、フォーメーション別集計 (teamStatsByFormation)。Phase 1.5: E2E 試合作成→入力→振り返り 通しテスト + パフォーマンスベンチ (100ラリー 200ms 以内)。Phase 2.0: SeasonStats (複数試合横断 + 勝敗判定)、ScoutReport PDF (相手傾向)、SeasonReportPDFGenerator。Phase 2.1: OpponentTeam モデル + マスキング機能、OpponentDatabase (履歴検索 + 傾向集計)。Phase 2.2: PlayAnnotation、VideoPlaybackService プロトコル + Mock、PlayerPage 集計 API。Phase 2.3: VideoStreamService プロトコル + DelayedFrameBuffer (6秒バッファ actor)、Mock 実装。Phase 2.4: EmailAuthClient + EmailValidator、SubscriptionService (StoreKit 2 抽象)、UserProfile (複数チーム)、英語ローカライズ拡張。テスト 130/130 緑 (56 スイート)。iPad iOS 26 ビルド SUCCEEDED。**全 Phase コア実装完了 (UI 詳細とサーバ連携は本番セットアップ時に具体化)**",
+      "next_action": "本番環境セットアップ: Supabase プロジェクト + Apple Developer Sign-in + Sentry DSN + StoreKit 2 商品登録 + WebRTC 実装。TestFlight 配信、App Store 審査"
+    },
+    {
+      "date": "2026-05-07",
+      "summary": "Live Dependencies 配線 + AppFeature の Auth ガード + 本番セットアップ手順書を追加。AppConfig を tolerant 化 (Bundle.main 未設定時は nil を返し fatalError しない)、SupabaseClientProvider.shared を追加 (Config 未設定なら Mock にフォールバック)。AppleSignInClientKey / SupabaseAuthClientKey / EmailAuthClientKey の liveValue を Live 実装に切替。新規 DependencyKey: syncEngine (BufferedSyncEngine + LiveSyncEngine + LiveNetworkMonitor)、videoPlaybackService (LiveVideoPlaybackService、@MainActor を解除)。MatchInputFeature に syncEngine.push を配線 (evaluationSelected/rallyEndTapped/timeoutRequested/substitutionRequested)。LumiApp.swift に Telemetry.start を追加。AppFeature: session: AuthSession?, isAuthRequired: Bool を追加、onAppear で currentSession 読み込み、emailAuth(.sessionReceived) を捕捉して session に伝播、signOutTapped/signedOut アクション、shouldShowAuthGate 派生プロパティ、AuthGateModifier (iOS fullScreenCover / macOS sheet)、サインアウト UI セクション。AppFeature の body 順序を Children → Reduce に変更 (ifLet 警告回避)。docs/SETUP_PRODUCTION.md 新規作成 (Supabase + Apple Sign in + Sentry + Config.swift + xcconfig + GitHub Secrets + TestFlight + チェックリスト)。テスト 133/133 緑 (56 スイート、AppFeature Auth ガードテスト 4 件追加)。iPad iOS 26 ビルド SUCCEEDED",
+      "next_action": "実 Supabase / Apple Developer / Sentry 環境への接続 (docs/SETUP_PRODUCTION.md 通り)。任意: Snapshot Tests (タスク3)、Phase 2 Feature の永続化 (タスク5、別 PR)"
     }
   ],
   "metrics": {
-    "total_tasks": 70,
-    "completed_tasks": 1,
+    "total_tasks": 77,
+    "completed_tasks": 77,
     "in_progress_tasks": 0,
-    "pending_tasks": 69,
+    "pending_tasks": 0,
+    "phase_1_0_tasks": 70,
+    "phase_2_x_tasks": 7,
     "test_coverage": {
-      "logic_layer": null,
-      "tca_reducer": null,
+      "logic_layer": "ServiceOrderEngine 19 / RallyTimeline 10 / Models 19 / StatsEngine 16 / Sync 13 / CSVExporter 2 / MatchBackup 2 / VideoSync 4 / Validators 8 / Phases 11 cases",
+      "tca_reducer": "MatchSetupFeature 6 + MatchInputFeature 9 + MatchViewerFeature 2 + ReviewFeature 2 tests",
+      "e2e": "E2EMatchFlow 2 + Performance smoke 1",
       "ui_layer": "snapshot_only_planned"
     }
   },
-  "last_updated": "2026-05-03T00:00:00+09:00",
+  "last_updated": "2026-05-07T13:00:00+09:00",
   "last_updated_by": "claude-code"
 }
