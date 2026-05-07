@@ -7,6 +7,9 @@ import Sentry
 import OSLog
 
 public enum Telemetry {
+    /// Sentry SDK が起動済みかどうか。breadcrumb / measure のガードに使う。
+    nonisolated(unsafe) private static var sdkStarted = false
+
     /// Sentry SDK 初期化。M0 で骨格、M8 で本格化。
     public static func start(
         dsn: String,
@@ -29,8 +32,20 @@ public enum Telemetry {
             #endif
             options.beforeSend = sanitizeEvent
         }
+        sdkStarted = true
 
         Logger.telemetryInternal.info("Sentry initialized: env=\(environment, privacy: .public)")
+    }
+
+    /// 本番環境で Sentry が正しく届くかを確認するためのテストイベント送信。
+    /// 開発時に設定画面のデバッグメニュー等から呼び出す想定。
+    public static func sendTestEvent(message: String = "Lumi test event") {
+        guard sdkStarted else {
+            Logger.telemetryInternal.warning("Sentry 未起動のため testEvent を送信不可")
+            return
+        }
+        SentrySDK.capture(message: message)
+        Logger.telemetryInternal.info("Sentry test event sent: \(message, privacy: .public)")
     }
 
     /// PII サニタイズ
@@ -53,12 +68,13 @@ public enum Telemetry {
         return event
     }
 
-    /// Breadcrumb 追加 (PII を含めないこと)
+    /// Breadcrumb 追加 (PII を含めないこと)。Sentry 未起動時は no-op。
     public static func breadcrumb(
         category: BreadcrumbCategory,
         message: String,
         data: [String: String]? = nil
     ) {
+        guard sdkStarted else { return }
         let crumb = Breadcrumb(level: .info, category: category.rawValue)
         crumb.message = message
         if let data {
@@ -67,12 +83,13 @@ public enum Telemetry {
         SentrySDK.addBreadcrumb(crumb)
     }
 
-    /// 計測ブロック
+    /// 計測ブロック。Sentry 未起動時は block をそのまま実行 (no-op)。
     public static func measure<T: Sendable>(
         _ name: String,
         op: String,
         block: @Sendable () async throws -> T
     ) async rethrows -> T {
+        guard sdkStarted else { return try await block() }
         let transaction = SentrySDK.startTransaction(name: name, operation: op)
         do {
             let result = try await block()
@@ -84,8 +101,12 @@ public enum Telemetry {
         }
     }
 
-    /// 例外を Sentry に送信
+    /// 例外を Sentry に送信。Sentry 未起動時は no-op (OSLog のみ残す)。
     public static func capture(_ error: Error) {
+        guard sdkStarted else {
+            Logger.telemetryInternal.error("captured (Sentry off): \(error.localizedDescription, privacy: .public)")
+            return
+        }
         SentrySDK.capture(error: error)
     }
 }

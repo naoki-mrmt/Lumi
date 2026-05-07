@@ -9,7 +9,7 @@ import UIKit
 @testable import MatchViewerFeature
 
 @MainActor
-@Suite("MatchViewerView Snapshots", .disabled("初回は recordingMode を有効にして記録する"))
+@Suite("MatchViewerView Snapshots")
 struct MatchViewerViewSnapshotTests {
     private func makeStore() -> StoreOf<MatchViewerFeature> {
         let (match, _) = SnapshotFixtures.basicMatch()
@@ -22,14 +22,14 @@ struct MatchViewerViewSnapshotTests {
     func matchViewer_light() async {
         let host = UIHostingController(rootView: NavigationStack { MatchViewerView(store: makeStore()) })
         host.overrideUserInterfaceStyle = .light
-        assertSnapshot(of: host, as: .image(on: .iPadPro13))
+        assertSnapshot(of: host, as: .image(on: .iPadPro12_9))
     }
 
     @Test("MatchViewerView - Dark Mode")
     func matchViewer_dark() async {
         let host = UIHostingController(rootView: NavigationStack { MatchViewerView(store: makeStore()) })
         host.overrideUserInterfaceStyle = .dark
-        assertSnapshot(of: host, as: .image(on: .iPadPro13))
+        assertSnapshot(of: host, as: .image(on: .iPadPro12_9))
     }
 }
 #endif

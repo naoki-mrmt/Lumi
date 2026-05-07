@@ -328,7 +328,7 @@ let package = Package(
         .testTarget(
             name: "PhasesTests",
             dependencies: [
-                "Models", "StatsEngine", "VideoSync", "AuthFeature", "LocalStore"
+                "Models", "StatsEngine", "VideoSync", "AuthFeature", "LocalStore", "Telemetry"
             ]
         ),
         .testTarget(

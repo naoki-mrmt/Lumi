@@ -39,6 +39,14 @@ test-xcode: ## Xcode 経由テスト (iPad Sim)
 		-skipMacroValidation \
 		CODE_SIGNING_ALLOWED=NO
 
+.PHONY: test-snapshots
+test-snapshots: ## SnapshotTests のみ iPad Sim で実行 (LumiKit-Package scheme)
+	DEVELOPER_DIR=$(XCODE_DEVELOPER) xcodebuild test \
+		-workspace . -scheme LumiKit-Package \
+		-destination '$(DESTINATION)' \
+		-only-testing:SnapshotTests \
+		-skipMacroValidation
+
 .PHONY: clean
 clean: ## .build / DerivedData をクリア
 	rm -rf .build

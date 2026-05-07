@@ -278,6 +278,11 @@
       "date": "2026-05-07",
       "summary": "Snapshot Tests 基盤 + Phase 2 Feature の永続化を追加。SnapshotTests テストターゲット新設 (5 ビューファイル: AppView/MatchInputView/MatchViewerView/ReviewView/ReportView × Light/Dark)、すべて #if os(iOS) ガード + .disabled で初期 disabled、xcodebuild test で recording モード手順を Tests/SnapshotTests/README.md に明記。LocalStore に OpponentTeam/PlayAnnotation/UserProfile 用の fetch/save/delete/fetchUserProfile クロージャを追加 (signature 互換のためデフォルト引数で既存呼び出し維持)。InMemoryLocalStoreActor 拡張で 3 エンティティを保持。SwiftDataModels に OpponentTeamRecord/PlayAnnotationRecord/UserProfileRecord @Model 追加 (UUID 配列はカンマ区切り文字列でエンコード)。SwiftDataStore に対応 fetch/save/delete メソッドを追加し、Schema に登録。LocalStore.swiftData ファクトリも完全配線。Reducer 配線: OpponentDatabaseFeature が派生 + 永続をマージ、notesChanged / maskedNameChanged / persistEdits を追加。VideoReviewFeature に onAppear + addAnnotation の永続化。TeamSwitcherFeature に profileLoaded、selectPrimary/teamCreated 後の saveUserProfile を追加。Phase2PersistenceTests 6 件追加。テスト 139/139 緑 (57 スイート)。iPad iOS 26 ビルド SUCCEEDED。**全 6 タスク完了**",
       "next_action": "実 Supabase / Apple Developer / Sentry 環境への接続 → TestFlight 配信。Snapshot 初回記録 (xcodebuild test, recording モード)"
+    },
+    {
+      "date": "2026-05-07",
+      "summary": "B 系 (技術的フォローアップ) 6 項目すべて対応。B1: Telemetry に sdkStarted ガードを追加し、SDK 未起動時の breadcrumb / measure / capture を no-op 化 (テスト出力の Sentry [fatal] 警告 0 件)。B2: LiveSyncEngine の deprecated channel.subscribe() を subscribeWithError() に置換、エラー時は continuation.finish()。B3: Snapshot Tests 5 ファイル × Light/Dark 計 10 件を iPad Pro 12.9\" (12.9 は swift-snapshot-testing プリセット制限のための代替) で記録、.disabled を解除し検証モードで動作確認、Tests/SnapshotTests/__Snapshots__ に 10 PNG をコミット。B4: .github/workflows/ci.yml に snapshot-tests job を追加 (macos-15、xcodebuild test -workspace . -scheme LumiKit-Package、失敗時は __Snapshots__ + Test ログを artifact upload)、Makefile に make test-snapshots ターゲット追加。B5: Telemetry に BatteryMonitor protocol + Mock + LiveBatteryMonitor (UIDevice.batteryLevel) と BatteryLevel enum (high/normal/low/critical/unknown + needsWarning) を追加、3 テスト追加。Telemetry.sendTestEvent(message:) も追加 (本番 Sentry 接続確認用)。B6: Localizable.xcstrings を 11 → 37 キーに拡張 (auth/match/team/review/report/opponent.db/video/error/alert/common 各カテゴリの主要 UI 文字列、ja+en)。テスト 142/142 緑 (58 スイート、+3 BatteryMonitor)。SnapshotTests 10/10 緑。iPad iOS 26 ビルド SUCCEEDED。secrets-scan 緑。**B 系完了**",
+      "next_action": "実 Supabase / Apple Developer / Sentry 環境への接続。CI 上で snapshot-tests job 動作確認 (push 後に GitHub Actions で確認)"
     }
   ],
   "metrics": {
@@ -294,6 +299,6 @@
       "ui_layer": "snapshot_only_planned"
     }
   },
-  "last_updated": "2026-05-07T14:00:00+09:00",
+  "last_updated": "2026-05-07T15:00:00+09:00",
   "last_updated_by": "claude-code"
 }

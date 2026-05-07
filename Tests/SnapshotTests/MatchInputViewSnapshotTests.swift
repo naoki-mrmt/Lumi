@@ -10,7 +10,7 @@ import UIKit
 @testable import MatchInputFeature
 
 @MainActor
-@Suite("MatchInputView Snapshots", .disabled("初回は recordingMode を有効にして記録する"))
+@Suite("MatchInputView Snapshots")
 struct MatchInputViewSnapshotTests {
     private func makeStore() -> StoreOf<MatchInputFeature> {
         let (match, _) = SnapshotFixtures.basicMatch()
@@ -27,14 +27,14 @@ struct MatchInputViewSnapshotTests {
     func matchInput_light() async {
         let host = UIHostingController(rootView: NavigationStack { MatchInputView(store: makeStore()) })
         host.overrideUserInterfaceStyle = .light
-        assertSnapshot(of: host, as: .image(on: .iPadPro13))
+        assertSnapshot(of: host, as: .image(on: .iPadPro12_9))
     }
 
     @Test("MatchInputView - Dark Mode")
     func matchInput_dark() async {
         let host = UIHostingController(rootView: NavigationStack { MatchInputView(store: makeStore()) })
         host.overrideUserInterfaceStyle = .dark
-        assertSnapshot(of: host, as: .image(on: .iPadPro13))
+        assertSnapshot(of: host, as: .image(on: .iPadPro12_9))
     }
 }
 #endif

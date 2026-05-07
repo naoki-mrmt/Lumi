@@ -91,7 +91,12 @@ public final class LiveSyncEngine: SyncEngine, @unchecked Sendable {
                     table: "substitutions"
                 )
 
-                await channel.subscribe()
+                do {
+                    try await channel.subscribeWithError()
+                } catch {
+                    continuation.finish()
+                    return
+                }
 
                 Task {
                     for await action in playInserts {

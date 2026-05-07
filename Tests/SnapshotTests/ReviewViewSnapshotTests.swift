@@ -9,7 +9,7 @@ import UIKit
 @testable import ReviewFeature
 
 @MainActor
-@Suite("ReviewView Snapshots", .disabled("初回は recordingMode を有効にして記録する"))
+@Suite("ReviewView Snapshots")
 struct ReviewViewSnapshotTests {
     private func makeStore() -> StoreOf<ReviewFeature> {
         let (match, _) = SnapshotFixtures.basicMatch()
@@ -22,14 +22,14 @@ struct ReviewViewSnapshotTests {
     func review_light() async {
         let host = UIHostingController(rootView: NavigationStack { ReviewView(store: makeStore()) })
         host.overrideUserInterfaceStyle = .light
-        assertSnapshot(of: host, as: .image(on: .iPadPro13))
+        assertSnapshot(of: host, as: .image(on: .iPadPro12_9))
     }
 
     @Test("ReviewView - Dark Mode")
     func review_dark() async {
         let host = UIHostingController(rootView: NavigationStack { ReviewView(store: makeStore()) })
         host.overrideUserInterfaceStyle = .dark
-        assertSnapshot(of: host, as: .image(on: .iPadPro13))
+        assertSnapshot(of: host, as: .image(on: .iPadPro12_9))
     }
 }
 #endif
