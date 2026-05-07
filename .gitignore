@@ -18,8 +18,7 @@ TestResults.xcresult/
 Package.resolved
 
 # Secrets (絶対にコミットしない)
-Lumi/Config.swift
-Config.swift
+Config.local.xcconfig
 .env
 .env.*
 !.env.example

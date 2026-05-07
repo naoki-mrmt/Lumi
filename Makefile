@@ -92,6 +92,7 @@ functions-serve: ## Edge Functions をローカル起動
 functions-deploy: ## Edge Functions を本番デプロイ
 	supabase functions deploy viewer-session
 	supabase functions deploy cleanup-expired-codes --no-verify-jwt
+	supabase functions deploy delete-account
 
 .PHONY: db-lint
 db-lint: ## SQL マイグレーションを lint (SQLFluff があれば)
@@ -115,12 +116,12 @@ gitignore-check: ## Config.swift / .env が誤コミットされていないか�
 # Bootstrap
 # ────────────────────────────────────────────────
 .PHONY: bootstrap
-bootstrap: ## 初回セットアップ (Config.swift コピー、SPM resolve)
-	@if [ ! -f Lumi/Config.swift ]; then \
-		cp Config.swift.template Lumi/Config.swift; \
-		echo "Created Lumi/Config.swift — fill in your values"; \
+bootstrap: ## 初回セットアップ (Config.local.xcconfig コピー、SPM resolve)
+	@if [ ! -f Config.local.xcconfig ]; then \
+		cp Config.local.xcconfig.template Config.local.xcconfig; \
+		echo "Created Config.local.xcconfig — fill in your secrets (.gitignore 済み)"; \
 	else \
-		echo "Lumi/Config.swift already exists"; \
+		echo "Config.local.xcconfig already exists"; \
 	fi
 	$(MAKE) resolve
 	@echo "Bootstrap complete. Run 'make build' next."

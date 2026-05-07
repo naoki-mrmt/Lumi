@@ -68,6 +68,7 @@ make db-push
 make functions-deploy
 # = supabase functions deploy viewer-session
 #   supabase functions deploy cleanup-expired-codes --no-verify-jwt
+#   supabase functions deploy delete-account
 ```
 
 ### 1.5 Edge Functions 用シークレットを登録
@@ -185,42 +186,47 @@ Xcode で `Lumi` ターゲットを選択 → **Signing & Capabilities → + Cap
 
 ---
 
-## 4. クライアント側 Config 設定
+## 4. クライアント側 Config 設定 (xcconfig 経由)
 
-### 4.1 Config.swift の作成 (一度きり)
+### 4.1 Config.local.xcconfig の作成 (一度きり)
 
 ```bash
 make bootstrap
-# = cp Config.swift.template Lumi/Config.swift
+# = cp Config.local.xcconfig.template Config.local.xcconfig
 ```
 
-エディタで `Lumi/Config.swift` を開いて値を埋める:
+エディタで `Config.local.xcconfig` を開いて値を埋める:
 
-```swift
-enum Config {
-    static let supabaseURL = "https://<PROJECT_REF>.supabase.co"
-    static let supabaseAnonKey = "<ANON_KEY>"
-    static let sentryDSN = "https://...@sentry.io/..."
-}
+```
+SUPABASE_URL = https:/$()/<PROJECT_REF>.supabase.co
+SUPABASE_ANON_KEY = <ANON_KEY>
+SENTRY_DSN = https:/$()/<KEY>@sentry.io/<PROJECT_ID>
 ```
 
-> **注意**: `Lumi/Config.swift` は `.gitignore` 済 (リポ root の .gitignore 参照)。誤コミットしないよう `git status` で必ず確認。`make secrets-scan` でもチェック可。
+> **xcconfig 構文の罠**: xcconfig では `:` の後の `//` がコメント開始扱いされる。
+> URL は `https:/$()/...` のように `$()` (空変数評価) を挟んで `//` を分断する。
 
-### 4.2 Info.plist への注入 (xcconfig 経由)
+> **誤コミット防止**: `Config.local.xcconfig` は `.gitignore` 済。`make secrets-scan` でも検出可。
 
-`AppConfig` は `Bundle.main.object(forInfoDictionaryKey:)` から値を読む設計。Xcode で `Lumi.xcconfig` (または Build Settings の User-Defined) で以下を定義し、Info.plist に補完:
+### 4.2 値の流れ (自動)
 
-1. プロジェクトを Xcode で開く
-2. `Lumi` ターゲット → **Info** タブ
-3. **Custom iOS Target Properties** に以下を追加:
-   - Key: `SUPABASE_URL` → Value: `$(SUPABASE_URL)`
-   - Key: `SUPABASE_ANON_KEY` → Value: `$(SUPABASE_ANON_KEY)`
-   - Key: `SENTRY_DSN` → Value: `$(SENTRY_DSN)`
-4. **Build Settings → User-Defined** で `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SENTRY_DSN` を定義
-   - Debug: Config.swift と同じ値、または開発用の dev プロジェクトを別途用意
-   - Release: 本番値
+```
+Config.local.xcconfig  (gitignore)
+        ↓ #include?
+Config.xcconfig        (committed、デフォルトは空)
+        ↓ baseConfigurationReference
+Lumi.xcodeproj         (Debug + Release 両方)
+        ↓ Info.plist の $(SUPABASE_URL) を変数展開
+Info.plist             (リポ root、committed)
+        ↓ Bundle.main.object(forInfoDictionaryKey:)
+AppConfig.supabaseURL  (SupabaseClient/SupabaseClientModule.swift)
+        ↓ SupabaseClientProvider.shared
+Live SDK / Mock fallback (未設定時)
+```
 
-> **代替**: Config.swift の値を直接 `LumiApp.swift` で AppConfig に渡す `Bundle.main.bundleIdentifier` チェック付き wrapper を作るのもあり。Phase 2 で再設計予定。
+`Config.local.xcconfig` がリポに無い (= 未設定) 場合は空文字列が注入され、
+`AppConfig.isConfigured == false` となり Mock にフォールバックする。
+ローカル開発でも fatalError しないよう設計済み。
 
 ### 4.3 動作確認
 

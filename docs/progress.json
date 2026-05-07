@@ -283,6 +283,11 @@
       "date": "2026-05-07",
       "summary": "B 系 (技術的フォローアップ) 6 項目すべて対応。B1: Telemetry に sdkStarted ガードを追加し、SDK 未起動時の breadcrumb / measure / capture を no-op 化 (テスト出力の Sentry [fatal] 警告 0 件)。B2: LiveSyncEngine の deprecated channel.subscribe() を subscribeWithError() に置換、エラー時は continuation.finish()。B3: Snapshot Tests 5 ファイル × Light/Dark 計 10 件を iPad Pro 12.9\" (12.9 は swift-snapshot-testing プリセット制限のための代替) で記録、.disabled を解除し検証モードで動作確認、Tests/SnapshotTests/__Snapshots__ に 10 PNG をコミット。B4: .github/workflows/ci.yml に snapshot-tests job を追加 (macos-15、xcodebuild test -workspace . -scheme LumiKit-Package、失敗時は __Snapshots__ + Test ログを artifact upload)、Makefile に make test-snapshots ターゲット追加。B5: Telemetry に BatteryMonitor protocol + Mock + LiveBatteryMonitor (UIDevice.batteryLevel) と BatteryLevel enum (high/normal/low/critical/unknown + needsWarning) を追加、3 テスト追加。Telemetry.sendTestEvent(message:) も追加 (本番 Sentry 接続確認用)。B6: Localizable.xcstrings を 11 → 37 キーに拡張 (auth/match/team/review/report/opponent.db/video/error/alert/common 各カテゴリの主要 UI 文字列、ja+en)。テスト 142/142 緑 (58 スイート、+3 BatteryMonitor)。SnapshotTests 10/10 緑。iPad iOS 26 ビルド SUCCEEDED。secrets-scan 緑。**B 系完了**",
       "next_action": "実 Supabase / Apple Developer / Sentry 環境への接続。CI 上で snapshot-tests job 動作確認 (push 後に GitHub Actions で確認)"
+    },
+    {
+      "date": "2026-05-07",
+      "summary": "C 系 (xcconfig + Phase 2.4 公開要件) 4 項目を対応。C1 xcconfig 結線: Config.xcconfig (committed、空デフォルト) + Config.local.xcconfig.template (committed) + Config.local.xcconfig (.gitignore) の三層構造、#include? で local override、INFOPLIST_KEY_* は Apple 既知キーのみなので Info.plist 実ファイルを作成しリポ root へ配置 (synchronized group の二重コピー回避)、GENERATE_INFOPLIST_FILE=NO + INFOPLIST_FILE=Info.plist + baseConfigurationReference を Debug/Release 双方に設定。Bundle.main から SUPABASE_URL/SUPABASE_ANON_KEY/SENTRY_DSN を読めることを実機ビルドで確認、Config.swift.template は legacy として削除、Makefile bootstrap を Config.local.xcconfig コピーに変更、SETUP_PRODUCTION.md §4 を全面書き換え。C3a LegalFeature 実コンテンツ: 利用規約 11 条、プライバシーポリシー 10 条 (個人情報定義/取得情報/利用目的/第三者提供 (Supabase/Sentry/Apple)/保管/開示請求/Cookie/児童プライバシー/変更/問い合わせ) を本文化。C3b アカウント削除 UI: SupabaseAuthClient.deleteAccount() を protocol に追加、Mock + Live (Edge Function 'delete-account' 呼び出し) 実装、AppFeature に deleteAccountTapped/Confirmed/Cancelled/accountDeleted、確認 alert + 削除ボタン (destructive)、accountDeleted で session/team/matches クリア。supabase/functions/delete-account/index.ts (Deno、JWT 検証 + auth.admin.deleteUser) と Makefile functions-deploy 追加。AppFeatureTests に 2 件追加。C3c PrivacyInfo.xcprivacy: NSPrivacyTracking=false、収集データ 4 種 (Email/UserID/Crash/Performance、すべて非トラッキング)、Required Reason API 3 種 (UserDefaults CA92.1 / FileTimestamp C617.1 / SystemBootTime 35F9.1) を宣言、Lumi/ 配下に配置で bundle root 自動コピー確認済。テスト 144/144 緑 (58 スイート、+2 アカウント削除)。SnapshotTests 10/10 緑。iPad iOS 26 ビルド SUCCEEDED。secrets-scan 緑",
+      "next_action": "実 Supabase / Apple Developer / Sentry 環境セットアップ → Config.local.xcconfig に値記入 → make functions-deploy で delete-account も含め全 Edge Function デプロイ → TestFlight 配信"
     }
   ],
   "metrics": {
@@ -299,6 +304,6 @@
       "ui_layer": "snapshot_only_planned"
     }
   },
-  "last_updated": "2026-05-07T15:00:00+09:00",
+  "last_updated": "2026-05-07T16:00:00+09:00",
   "last_updated_by": "claude-code"
 }

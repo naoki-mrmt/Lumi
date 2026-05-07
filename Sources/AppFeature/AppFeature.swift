@@ -51,6 +51,7 @@ public struct AppFeature: Sendable {
 
         public var errorMessage: String?
         public var recoverableMatch: Match?
+        public var presentingDeleteAccountConfirm: Bool = false
 
         public init(isAuthRequired: Bool = false) {
             self.isAuthRequired = isAuthRequired
@@ -67,6 +68,10 @@ public struct AppFeature: Sendable {
         case sessionLoaded(AuthSession?)
         case signOutTapped
         case signedOut
+        case deleteAccountTapped
+        case deleteAccountConfirmed
+        case deleteAccountCancelled
+        case accountDeleted
         case teamLoaded(Team?)
         case matchesLoaded([Match])
         case loadFailed(String)
@@ -158,6 +163,35 @@ public struct AppFeature: Sendable {
 
             case .signedOut:
                 state.session = nil
+                if state.isAuthRequired {
+                    state.emailAuth = EmailAuthFeature.State()
+                }
+                return .none
+
+            case .deleteAccountTapped:
+                state.presentingDeleteAccountConfirm = true
+                return .none
+
+            case .deleteAccountCancelled:
+                state.presentingDeleteAccountConfirm = false
+                return .none
+
+            case .deleteAccountConfirmed:
+                state.presentingDeleteAccountConfirm = false
+                return .run { send in
+                    do {
+                        try await supabaseAuth.deleteAccount()
+                    } catch {
+                        // Edge Function 失敗時はサインアウトのみで続行 (ユーザは削除リクエストできた状態)
+                        try? await supabaseAuth.signOut()
+                    }
+                    await send(.accountDeleted)
+                }
+
+            case .accountDeleted:
+                state.session = nil
+                state.team = nil
+                state.allMatches = []
                 if state.isAuthRequired {
                     state.emailAuth = EmailAuthFeature.State()
                 }
@@ -379,6 +413,18 @@ public struct AppView: View {
             } message: { match in
                 Text("vs \(match.opponentTeamName)\n\(match.date.formatted(date: .abbreviated, time: .omitted))")
             }
+            .alert(
+                "アカウントを削除しますか?",
+                isPresented: Binding(
+                    get: { store.presentingDeleteAccountConfirm },
+                    set: { if !$0 { store.send(.deleteAccountCancelled) } }
+                )
+            ) {
+                Button("削除する", role: .destructive) { store.send(.deleteAccountConfirmed) }
+                Button("キャンセル", role: .cancel) { store.send(.deleteAccountCancelled) }
+            } message: {
+                Text("関連するすべての試合データ・選手・対戦相手 DB が消去されます。この操作は取り消せません。")
+            }
         }
     }
 
@@ -439,16 +485,23 @@ public struct AppView: View {
 
     @ViewBuilder
     private var signOutSection: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 8) {
             if let email = store.session?.email {
                 Text("サインイン中: \(email)")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-            Button("サインアウト") {
-                store.send(.signOutTapped)
+            HStack(spacing: 12) {
+                Button("サインアウト") {
+                    store.send(.signOutTapped)
+                }
+                .buttonStyle(.bordered)
+
+                Button("アカウント削除", role: .destructive) {
+                    store.send(.deleteAccountTapped)
+                }
+                .buttonStyle(.bordered)
             }
-            .buttonStyle(.bordered)
         }
     }
 

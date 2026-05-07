@@ -18,11 +18,15 @@ public protocol SupabaseAuthClient: Sendable {
     func signInWithApple(idToken: String, nonce: String) async throws -> AuthSession
     func signOut() async throws
     func currentSession() async -> AuthSession?
+    /// アカウント削除 (Edge Function "delete-account" を service_role 権限で呼び出す前提)。
+    /// 関連 RLS データは ON DELETE CASCADE で連鎖削除される。
+    func deleteAccount() async throws
 }
 
 public final class MockSupabaseAuthClient: SupabaseAuthClient, @unchecked Sendable {
     private var session: AuthSession?
     public var shouldFail: Bool = false
+    public private(set) var deletedAccount: Bool = false
 
     public init(initial: AuthSession? = nil) {
         self.session = initial
@@ -41,5 +45,10 @@ public final class MockSupabaseAuthClient: SupabaseAuthClient, @unchecked Sendab
 
     public func currentSession() async -> AuthSession? {
         session
+    }
+
+    public func deleteAccount() async throws {
+        deletedAccount = true
+        session = nil
     }
 }

@@ -33,4 +33,12 @@ public final class LiveSupabaseAuthClient: SupabaseAuthClient, @unchecked Sendab
             accessToken: session.accessToken
         )
     }
+
+    /// Edge Function `delete-account` を呼び出してユーザを削除する。
+    /// 関数側は service_role キーで `auth.admin.deleteUser(userId)` を実行する想定。
+    /// supabase/functions/delete-account/index.ts を別途デプロイ要。
+    public func deleteAccount() async throws {
+        _ = try await client.functions.invoke("delete-account")
+        try? await client.auth.signOut()
+    }
 }

@@ -86,4 +86,54 @@ struct AppFeatureAuthGateTests {
             $0.emailAuth = EmailAuthFeature.State()
         }
     }
+
+    @Test("deleteAccountTapped で確認ダイアログを開く")
+    func deleteAccountConfirmDialog() async {
+        let session = AuthSession(userId: UUID(), email: "test@example.com", accessToken: "tok")
+        var initial = AppFeature.State(isAuthRequired: true)
+        initial.session = session
+        let store = await TestStore(initialState: initial) {
+            AppFeature()
+        } withDependencies: {
+            $0.localStore = .inMemory()
+            $0.supabaseAuthClient = MockSupabaseAuthClient(initial: session)
+        }
+        store.exhaustivity = .off
+
+        await store.send(.deleteAccountTapped) {
+            $0.presentingDeleteAccountConfirm = true
+        }
+        await store.send(.deleteAccountCancelled) {
+            $0.presentingDeleteAccountConfirm = false
+        }
+    }
+
+    @Test("deleteAccountConfirmed → accountDeleted で session/team/matches がクリア")
+    func deleteAccountConfirmed() async {
+        let session = AuthSession(userId: UUID(), email: "test@example.com", accessToken: "tok")
+        let team = Team(ownerId: session.userId, name: "Test Team")
+        var initial = AppFeature.State(isAuthRequired: true)
+        initial.session = session
+        initial.team = team
+        initial.presentingDeleteAccountConfirm = true
+        let mockAuth = MockSupabaseAuthClient(initial: session)
+        let store = await TestStore(initialState: initial) {
+            AppFeature()
+        } withDependencies: {
+            $0.localStore = .inMemory()
+            $0.supabaseAuthClient = mockAuth
+        }
+        store.exhaustivity = .off
+
+        await store.send(.deleteAccountConfirmed) {
+            $0.presentingDeleteAccountConfirm = false
+        }
+        await store.receive(\.accountDeleted) {
+            $0.session = nil
+            $0.team = nil
+            $0.allMatches = []
+            $0.emailAuth = EmailAuthFeature.State()
+        }
+        #expect(mockAuth.deletedAccount)
+    }
 }
